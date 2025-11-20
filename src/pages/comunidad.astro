@@ -1,0 +1,85 @@
+---
+// Importamos una fuente elegante de Google Fonts para que se vea como el diseño
+// Puedes poner esto en tu Layout principal también
+import Layout from "../layouts/Layout.astro";
+import '../styles/global.css';
+const items = [
+  {
+    title: "destacados",
+    subtitle: "Lo mas relevante",
+    image: "https://images.unsplash.com/photo-1518182170546-0766bcff46dc?q=80&w=500&auto=format&fit=crop", // Reemplaza con tus imágenes locales
+    reverse: false, // Imagen a la izquierda
+  },
+  {
+    title: "fotos y imagenes",
+    subtitle: "Fotos de los viajeros",
+    image: "https://images.unsplash.com/photo-1585074279373-b883f3f5770a?q=80&w=500&auto=format&fit=crop",
+    reverse: true, // Imagen a la derecha
+  },
+  {
+    title: "recomendaciones",
+    subtitle: "como mejorar tu experiencia",
+    image: "https://images.unsplash.com/photo-1534777367038-9404f45b869a?q=80&w=500&auto=format&fit=crop",
+    reverse: false,
+  },
+  {
+    title: "opiniones",
+    subtitle: "pensamientos de los viajeros",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?q=80&w=500&auto=format&fit=crop",
+    reverse: true,
+  },
+];
+---
+<Layout title="Comunidad - Maya Trip Express">
+<section class="w-full bg-[#FDFBF7] text-[#1a1a1a] py-12 px-4 md:px-8 font-sans">
+  <div class="max-w-6xl mx-auto">
+    
+    <div class="text-center mb-8">
+      <h2 class="text-5xl md:text-6xl font-normal tracking-tight text-black mb-4" style="font-family: 'Arial', sans-serif;">
+        comunidad
+      </h2>
+    </div>
+
+    <div class="border-t-2 border-black">
+      <div class="grid grid-cols-1 md:grid-cols-2">
+        
+        {items.map((item, index) => (
+          <div class={`
+            relative flex items-center p-6 md:p-10 gap-6
+            border-b-2 border-black 
+            ${index % 2 === 0 ? 'md:border-r-2' : ''} /* Borde vertical solo en impares (izquierda) */
+            ${item.reverse ? 'flex-row-reverse text-right' : 'flex-row text-left'} /* Alternar dirección */
+          `}>
+            
+            <div class="w-1/2 aspect-video overflow-hidden rounded-2xl shadow-sm">
+              <img 
+                src={item.image} 
+                alt={item.title} 
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <div class="w-1/2 flex flex-col justify-center">
+              <h3 class="text-2xl md:text-3xl font-bold text-[#2E7D32] mb-1 lowercase">
+                {item.title}
+              </h3>
+              <p class="text-lg text-gray-600 italic font-serif">
+                {item.subtitle}
+              </p>
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <a href="/siguiente" class="text-lg font-medium hover:underline tracking-widest group">
+        NEXT <span class="inline-block transition-transform group-hover:translate-x-1">>></span>
+      </a>
+    </div>
+
+  </div>
+</section>
+</Layout>
