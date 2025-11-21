@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+
 export interface Props {
   title: string;
 }
@@ -16,31 +17,49 @@ const { title } = Astro.props;
   </head>
   <body>
     <header
-      class="font-medium bg-linear-to-r from-blue-600 via-blue-400 to-blue-300"
-    >
-      <nav class="flex justify-evenly">
-        <div><img src="https://placehold.co/80X80" alt="" /></div>
-        <div class="flex items-center">
-          <ul class="flex gap-12">
-            <li class="hover:text-white transition duration-300">
-              <a href="/">Inicio</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/experiencias">Experiencias</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/pueblos-destacados">Pueblos destacados</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/comunidad">Comunidad</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/ayuda">Ayuda</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+  class="font-medium bg-gradient-to-r from-teal-400 via-teal-300 to-lime-300 shadow-lg"
+>
+  <nav class="flex items-center justify-between px-10 py-4">
+    
+    <!-- LOGO -->
+    <div class="flex items-center gap-3">
+      <img 
+        src="https://placehold.co/80x80" 
+        alt="Logo" 
+        class="rounded-full shadow-md"
+      />
+      <span class="text-white font-bold text-2xl drop-shadow">
+        Ximbal Maya
+      </span>
+    </div>
+
+    <!-- LINKS -->
+    <ul class="flex gap-10 text-lg text-white">
+      <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/">Inicio</a>
+      </li>
+      <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/experiencias">Experiencias</a>
+      </li>
+      <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/pueblos-destacados">Pueblos destacados</a>
+      </li>
+      <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/comunidad">Comunidad</a>
+      </li>
+      <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/ayuda">Ayuda</a>
+      </li>
+       <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/ayuda">idioma</a>
+      </li>
+       <li class="hover:text-yellow-200 transition duration-300">
+        <a href="/ayuda">iniciar sesion</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
     <slot />
   </body>
 </html>
