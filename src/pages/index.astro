@@ -1,10 +1,79 @@
 ---
-import Layout from "../Layouts/Layout.astro";
+import Layout from "../../src/layouts/Layout.astro";
 import Contador from "../components/Contador";
+import Image from "astro/components/Image.astro";
 ---
 
-<Layout title="Maya Trip Express">
-  <h1>Welcome to Maya Trip Express</h1>
-  <p>Your gateway to exploring the wonders of the Maya civilization.</p>
-  <Contador client:load />
+<Layout title="Ximbal Maya">
+  <section class="relative overflow-hidden bg-gradient-to-r from-teal-300 to-lime-300 p-10 rounded-3xl shadow-xl">
+    
+    <div class="absolute top-0 left-0 w-40 h-40 bg-white opacity-30 rounded-full blur-xl"></div>
+    <div class="absolute bottom-0 right-0 w-56 h-56 bg-yellow-300 opacity-40 rounded-full blur-xl"></div>
+
+    <div class="relative grid md:grid-cols-2 gap-10 items-center">
+      
+      <div class="flex justify-center">
+        <img 
+          src="/imagen1.jpeg" 
+          alt="Ximbal Maya Art" 
+          class="w-80 drop-shadow-2xl"
+        />
+      </div>
+
+      <div>
+        <h1 class="text-5xl font-extrabold text-white drop-shadow-md">
+          Ximbal Maya
+        </h1>
+        <p class="text-xl text-white mt-4">
+          Transforma tu Negocio con Nosotros
+        </p>
+
+        <div class="mt-8">
+          <a
+            href="/mapa"
+            class="bg-white text-black px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition"
+          >
+            Siguiente
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="mt-10">
+    <Contador client:load />
+  </div>
+
+  <section class="mt-20 bg-[#D7CCC8] p-8 rounded-xl shadow">
+    <h2 class="text-3xl font-bold text-[#5D4037] mb-4">Sobre Nosotros</h2>
+    <p class="text-[#5D4037] text-lg leading-relaxed">
+      Ximbal Maya es una plataforma dedicada a apoyar negocios con soluciones digitales,
+      diseño auténtico y herramientas inteligentes inspiradas en la cultura Maya.
+    </p>
+  </section>
+
+  <section class="mt-20 grid md:grid-cols-3 gap-8">
+
+    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#D7CCC8]">
+      <h3 class="text-xl font-bold text-[#2E7D32] mb-2">Mapa Interactivo</h3>
+      <p class="text-[#5D4037]">
+        Explora ubicaciones, rutas y puntos de interés con un mapa dinámico.
+      </p>
+    </div>
+
+    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#D7CCC8]">
+      <h3 class="text-xl font-bold text-[#2E7D32] mb-2">Rutas Turísticas</h3>
+      <p class="text-[#5D4037]">
+        Rutas optimizadas para descubrir lo más icónico del mundo Maya.
+      </p>
+    </div>
+
+    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#D7CCC8]">
+      <h3 class="text-xl font-bold text-[#2E7D32] mb-2">Cultura Maya</h3>
+      <p class="text-[#5D4037]">
+        Aprende sobre historia, arte y tradiciones auténticas.
+      </p>
+    </div>
+  </section>
 </Layout>
