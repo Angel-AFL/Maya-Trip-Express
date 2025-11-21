@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 import "../styles/global.css";
 
@@ -63,3 +64,51 @@ const { title } = Astro.props;
     <slot />
   </body>
 </html>
+=======
+---
+import "../styles/global.css";
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header
+      class="font-medium bg-linear-to-r from-blue-600 via-blue-400 to-blue-300"
+    >
+      <nav class="flex justify-evenly">
+        <div><img src="https://placehold.co/80X80" alt="" /></div>
+        <div class="flex items-center">
+          <ul class="flex gap-12">
+            <li class="hover:text-white transition duration-300">
+              <a href="/">Inicio</a>
+            </li>
+            <li class="hover:text-white transition duration-300">
+              <a href="/experiencias">Experiencias</a>
+            </li>
+            <li class="hover:text-white transition duration-300">
+              <a href="/pueblos-destacados">Pueblos destacados</a>
+            </li>
+            <li class="hover:text-white transition duration-300">
+              <a href="/comunidad">Comunidad</a>
+            </li>
+            <li class="hover:text-white transition duration-300">
+              <a href="/ayuda">Ayuda</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <slot />
+  </body>
+</html>
+>>>>>>> b4cbc327c93b8b3dc7ed6174fd3b43b465d027e0
