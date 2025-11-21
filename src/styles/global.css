@@ -1,1 +1,4 @@
 @import "tailwindcss";
+@theme {
+  --color-papel: #f8f3dc;
+}
