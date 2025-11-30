@@ -1,46 +1,155 @@
 ---
 import "../styles/global.css";
-export interface Props {
-  title: string;
-}
-
+export interface Props { title: string; }
 const { title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
   </head>
-  <body>
-    <header
-      class="font-medium bg-linear-to-r from-blue-600 via-blue-400 to-blue-300"
-    >
-      <nav class="flex justify-evenly">
-        <div><img src="https://placehold.co/80X80" alt="" /></div>
-        <div class="flex items-center">
-          <ul class="flex gap-12">
-            <li class="hover:text-white transition duration-300">
-              <a href="/">Inicio</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/experiencias">Experiencias</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/pueblos-destacados">Pueblos destacados</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/comunidad">Comunidad</a>
-            </li>
-            <li class="hover:text-white transition duration-300">
-              <a href="/ayuda">Ayuda</a>
-            </li>
-          </ul>
+
+  <body class="bg-[#F5F7F9] text-[#0A3A52] relative">
+
+    <!-- menu-->
+    <header class="bg-linear-to-r from-blue-600 via-blue-400 to-blue-300 shadow-lg">
+      <nav class="flex justify-between items-center px-10 py-4">
+        <div class="flex items-center gap-4">
+          <img src="/public/Gemin.png" alt="Logo Ximbal Maya" class="w-30" />
+          <span class="text-white text-2xl font-bold tracking-wide">
+            XIMBAL MAYA
+          </span>
         </div>
+
+        <ul class="flex gap-8 text-white text-lg font-semibold items-center">
+          <li><a class="hover:text-[#23C7A4] transition" href="/">Inicio</a></li>
+          <li><a class="hover:text-[#23C7A4] transition" href="/mapa">Mapa</a></li>
+          <li><a class="hover:text-[#23C7A4] transition" href="/rutas">Rutas</a></li>
+          <li><a class="hover:text-[#23C7A4] transition" href="/cultura">Cultura</a></li>
+          <li><a class="hover:text-[#23C7A4] transition" href="/negocios">Negocios</a></li>
+
+          <li class="relative">
+            <button id="langBtn" class="hover:text-[#23C7A4] transition flex items-center gap-1 text-white">
+              Idioma <span class="text-sm"></span>
+            </button>
+
+            <!-- menuidioma -->
+            <ul id="langMenu"
+              class="absolute hidden bg-white text-[#0A3A52] shadow-lg rounded-md py-2 mt-2 w-32 z-50">
+              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Español</a></li>
+              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Inglés</a></li>
+              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Maya</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <button
+              id="openLogin"
+              class="bg-[#23C7A4] text-[#0A3A52] px-4 py-1 rounded-lg font-semibold hover:bg-[#1ea88b] transition"
+            >
+              Iniciar sesión
+            </button>
+          </li>
+
+        </ul>
       </nav>
     </header>
-    <slot />
+
+    <!--  CONTENIDO NO QUITAR -->
+    <main>
+      <slot />
+    </main>
+
+    <div id="loginModal"
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex justify-center items-center z-50">
+      <div class="bg-[#FAF7E8] w-[90%] md:w-[700px] rounded-2xl shadow-xl border p-8 relative animate-scale">
+        <button id="closeLogin" class="absolute right-5 top-5 text-3xl font-bold text-[#0A3A52]">
+          ✕
+        </button>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <img
+            src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/01ed8651063409.58e1b843cef5b.png"
+            class="rounded-xl border border-[#C3B091]"
+          />
+
+          <div>
+            <h2 class="text-3xl font-bold mb-3 text-[#2F4F4F]">Login</h2>
+            <p class="text-[#2F4F4F] mb-6">
+              Inicie sesión para compartir sus experiencias y solicitar una colaboración.
+            </p>
+
+            <form class="flex flex-col gap-4">
+              <div>
+                <label class="text-[#2F4F4F] font-semibold">Usuario</label>
+                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="text" />
+              </div>
+
+              <div>
+                <label class="text-[#2F4F4F] font-semibold">Email</label>
+                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="email" />
+              </div>
+
+              <div>
+                <label class="text-[#2F4F4F] font-semibold">Contraseña</label>
+                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="password" />
+              </div>
+
+              <button class="mt-4 bg-[#2F4F4F] text-white py-2 rounded-xl hover:bg-black transition">
+                Entrar
+              </button>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+
+        const langBtn = document.getElementById("langBtn");
+        const langMenu = document.getElementById("langMenu");
+
+        if (langBtn && langMenu) {
+          langBtn.onclick = () => langMenu.classList.toggle("hidden");
+
+          document.addEventListener("click", (e) => {
+            if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+              langMenu.classList.add("hidden");
+            }
+          });
+        }
+
+        const modal = document.getElementById("loginModal");
+        const open = document.getElementById("openLogin");
+        const close = document.getElementById("closeLogin");
+
+        if (open && modal && close) {
+
+          open.onclick = () => modal.classList.remove("hidden");
+          close.onclick = () => modal.classList.add("hidden");
+
+          modal.onclick = (e) => {
+            if (e.target === modal) modal.classList.add("hidden");
+          };
+        }
+
+      });
+    </script>
+
+    <style>
+      .animate-scale {
+        animation: scaleIn .3s ease-out;
+      }
+      @keyframes scaleIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to   { transform: scale(1); opacity: 1; }
+      }
+    </style>
+
   </body>
 </html>

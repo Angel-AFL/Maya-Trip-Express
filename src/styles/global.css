@@ -2,3 +2,19 @@
 @theme {
   --color-papel: #f8f3dc;
 }
+@import "tailwindcss";
+
+/* Animación personalizada */
+@layer utilities {
+  @keyframes slide-carousel {
+    0% { transform: translateX(0%); }
+    33% { transform: translateX(-100%); }
+    66% { transform: translateX(-200%); }
+    100% { transform: translateX(0%); }
+  }
+
+  .grid-carousel {
+    @apply grid grid-cols-3 w-[300%] h-full;
+    animation: slide-carousel 18s infinite linear;
+  }
+}
