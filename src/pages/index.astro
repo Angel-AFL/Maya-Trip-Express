@@ -2,7 +2,7 @@
 import Layout from "../../src/layouts/Layout.astro";
 ---
 
-<Layout title="Ximbal Maya">
+<Layout title="Xiimbal Maya">
 
   <!-- CARRUSEL -->
   <section class="relative w-full h-[480px] overflow-hidden">
@@ -11,45 +11,58 @@ import Layout from "../../src/layouts/Layout.astro";
     <div id="carouselSlides" class="relative h-full">
 
       <div class="carousel-slide absolute inset-0 opacity-100 transition-opacity duration-700">
-        <img src="https://periodicoviaje.com/wp-content/uploads/2020/06/yucatan.jpg" class="w-full h-full object-cover" />
+        <img
+          src="https://periodicoviaje.com/wp-content/uploads/2020/06/yucatan.jpg"
+          class="w-full h-full object-cover"
+        />
       </div>
 
       <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700">
-        <img src="https://www.eloriente.net/home/wp-content/uploads/2014/11/feria_mundial_de_turismo_cultural.jpg" class="w-full h-full object-cover" />
+        <img
+          src="https://www.eloriente.net/home/wp-content/uploads/2014/11/feria_mundial_de_turismo_cultural.jpg"
+          class="w-full h-full object-cover"
+        />
       </div>
 
       <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700">
-        <img src="https://i0.wp.com/culturacolectiva.com/wp-content/uploads/2023/02/UWAVX3RN6JGZ3EJMK7K3JZ6A4Q.jpg?resize=750%2C375&ssl=1" class="w-full h-full object-cover" />
+        <img
+          src="https://i0.wp.com/culturacolectiva.com/wp-content/uploads/2023/02/UWAVX3RN6JGZ3EJMK7K3JZ6A4Q.jpg?resize=750%2C375&ssl=1"
+          class="w-full h-full object-cover"
+        />
       </div>
 
     </div>
 
     <!-- TEXTO ENCIMA -->
     <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-8">
-
       <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-xl">
-        Bienvenido a Ximbal Maya
+        Bienvenido a Xiimbal Maya
       </h1>
 
       <p class="mt-4 text-lg md:text-xl text-white/90 max-w-3xl">
         Explora la Zona Maya de forma inteligente y culturalmente auténtica.
       </p>
 
-      <a href="/mapa"
-        class="mt-6 bg-[#23C7A4] hover:bg-[#1da689] text-white font-bold px-6 py-3 rounded-xl shadow-lg transition">
+      <a
+        href="/maps"
+        class="mt-6 bg-[#23C7A4] hover:bg-[#1da689] text-white font-bold px-6 py-3 rounded-xl shadow-lg transition"
+      >
         Explorar Mapa Interactivo
       </a>
-
     </div>
 
     <!-- FLECHAS -->
-    <button id="prevSlide"
-      class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full">
+    <button
+      id="prevSlide"
+      class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full"
+    >
       <span class="text-2xl">&larr;</span>
     </button>
 
-    <button id="nextSlide"
-      class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full">
+    <button
+      id="nextSlide"
+      class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full"
+    >
       <span class="text-2xl">&rarr;</span>
     </button>
 
@@ -72,7 +85,6 @@ import Layout from "../../src/layouts/Layout.astro";
       slides.forEach((slide, i) => {
         slide.style.opacity = i === n ? "1" : "0";
       });
-
       dots.forEach((dot, i) => {
         dot.style.opacity = i === n ? "1" : "0.4";
       });
@@ -84,23 +96,24 @@ import Layout from "../../src/layouts/Layout.astro";
     }
 
     document.getElementById("nextSlide").onclick = next;
+
     document.getElementById("prevSlide").onclick = () => {
       index = (index - 1 + slides.length) % slides.length;
       showSlide(index);
     };
 
     setInterval(next, 5000);
+
     showSlide(index);
   </script>
-
 
   <!-- SOBRE NOSOTROS -->
   <section class="mt-20 bg-white p-10 max-w-5xl mx-auto rounded-2xl shadow">
     <h2 class="text-3xl font-bold text-[#0A3A52] mb-4">Sobre Nosotros</h2>
     <p class="text-lg leading-relaxed text-[#0A3A52]">
-      Somos una plataforma dedicada al turismo cultural Maya, ofreciendo rutas,
-      guías, hoteles, pueblos mágicos y experiencias auténticas para viajeros
-      que desean explorar la región de forma responsable, inteligente y profunda.
+      Somos una plataforma dedicada al turismo cultural Maya, ofreciendo rutas, guías,
+      hoteles, pueblos mágicos y experiencias auténticas para viajeros que desean explorar
+      la región de forma responsable, inteligente y profunda.
     </p>
   </section>
 
