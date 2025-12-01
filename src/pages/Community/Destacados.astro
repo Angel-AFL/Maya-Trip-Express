@@ -1,0 +1,41 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+---
+
+
+<Layout title="Destacados - Maya Trip Express">
+<section class="w-full bg-papel min-h-screen text-[#1a1a1a] py-12 px-4 md:px-8">
+  <div class="max-w-5xl mx-auto">
+
+    <h1 class="text-5xl font-bold text-center mb-8">Destacados</h1>
+
+    <p class="text-lg mb-6">
+      Aquí encontrarás lo más relevante de la semana: noticias, actividades y momentos importantes de la comunidad Maya Trip Express.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Foto agregable por URL -->
+      <div class="rounded-xl overflow-hidden shadow-lg border border-black">
+        <img 
+          src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1200"
+          alt="Destacado"
+          class="w-full h-64 object-cover"
+        />
+      </div>
+
+      <div class="border border-black p-6 rounded-xl bg-white/70">
+        <h2 class="text-3xl font-semibold mb-2 text-[#2E7D32]">El inicio de todo</h2>
+        <p class="text-lg">
+          lo que los viajeros estan diciendo sobre nosotros y sus experiencias recientes aqui se escribira.
+        </p>
+      </div>
+
+    </div>
+         <div class="mt-10 text-right">
+              <a href="/comunidad" class="underline text-lg">← Volver a comunidad</a>
+         </div>
+  </div>
+</section>
+</Layout>

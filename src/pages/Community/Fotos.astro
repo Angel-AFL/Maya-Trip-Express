@@ -1,0 +1,36 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+
+const fotos = [
+  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+  "/Comunidad/tradicion.png",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+];
+---
+
+<Layout title="Fotos de la Comunidad - Maya Trip Express">
+<section class="w-full bg-papel text-[#1a1a1a] py-12 px-4 md:px-8 font-sans">
+  <div class="max-w-6xl mx-auto">
+
+    <h1 class="text-5xl font-bold mb-6">Fotos de los Viajeros</h1>
+    <p class="text-lg mb-8">
+      Aquí se muestran imágenes enviadas por la comunidad. Puedes reemplazar o agregar URLs de fotos web 
+      fácilmente desde este archivo.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {fotos.map((src) => (
+        <div class="aspect-square overflow-hidden rounded-2xl shadow-lg border-2 border-neutral-300">
+          <img src={src} class="w-full h-full object-cover" alt="foto" />
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-10 text-right">
+      <a href="/comunidad" class="underline text-lg">← Volver a comunidad</a>
+    </div>
+
+  </div>
+</section>
+</Layout>
