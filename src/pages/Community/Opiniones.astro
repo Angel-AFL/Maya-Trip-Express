@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+---
+
+<Layout title="Opiniones - Maya Trip Express">
+<section class="w-full bg-papel min-h-screen text-[#1a1a1a] py-12 px-4 md:px-8">
+  <div class="max-w-6xl mx-auto">
+
+    <h1 class="text-5xl font-bold text-center mb-10">Opiniones de viajeros</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+      <!-- Testimonial 1 -->
+      <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-black shadow-xl">
+        <p class="text-xl italic">
+          “Una experiencia increíble. El viaje estuvo bien organizado y el guía fue muy amable.”
+        </p>
+        <div class="mt-4">
+          <h3 class="text-xl font-bold text-[#2E7D32]">— Andrea G.</h3>
+          <p class="text-sm text-gray-700">Ciudad de México</p>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-black shadow-xl">
+        <p class="text-xl italic">
+          “Lo recomiendo muchísimo. Todo estuvo muy seguro y los paisajes hermosos.”
+        </p>
+        <div class="mt-4">
+          <h3 class="text-xl font-bold text-[#2E7D32]">— Luis M.</h3>
+          <p class="text-sm text-gray-700">Oaxaca</p>
+        </div>
+      </div>
+
+    </div>
+        <div class="mt-10">
+              <a href="/comunidad" class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition">
+                   ← Regresar
+              </a>
+          </div>
+  </div>
+</section>
+</Layout>
