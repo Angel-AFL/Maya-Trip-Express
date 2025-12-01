@@ -6,14 +6,13 @@ interface Item {
   subtitle: string;
   image: string;
   reverse: boolean;
-  modalComponent: React.FC;
+  modalComponent?: React.FC;
 }
 
 export default function CommunityGrid({ items }: { items: Item[] }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<Item | null>(null);
 
-  // rutas dinámicas según el título
   const redirectRoutes: Record<string, string> = {
     destacados: "/Community/Destacados",
     Fotos: "/Community/Fotos",
@@ -27,36 +26,43 @@ export default function CommunityGrid({ items }: { items: Item[] }) {
   };
 
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-2 border-t-4 border-black">
-        {items.map((item, index) => (
-          <button
+    <div className="w-full min-h-screen p-6 md:p-10 mx-auto max-w-7xl">
+      {/* Contenido Principal - Full Screen Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-10">
+        {items.map((item) => (
+          <div
             key={item.title}
             onClick={() => openModal(item)}
-            className={`relative flex items-center p-6 md:p-10 gap-6 border-b-4 border-black w-full text-left
-              ${index % 2 === 0 ? "md:border-r-4" : ""}
-              ${item.reverse ? "flex-row-reverse text-right" : "flex-row"}
-            `}
+            className="
+              cursor-pointer bg-white/90 backdrop-blur-xl border border-black/10
+              rounded-3xl shadow-lg hover:shadow-2xl transition-all p-6
+              flex flex-col gap-5 hover:-translate-y-1
+            "
           >
             {/* Imagen */}
-            <div className="w-1/2 aspect-video overflow-hidden rounded-2xl shadow-sm">
+            <div className="overflow-hidden rounded-2xl aspect-video">
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover hover:scale-110 transition-all duration-500"
               />
             </div>
 
             {/* Texto */}
-            <div className="w-1/2 flex flex-col justify-center">
-              <h3 className="text-2xl md:text-3xl font-bold text-[#2E7D32] mb-1 lowercase">
+            <div>
+              <h3 className="text-3xl font-extrabold text-[#2E7D32] capitalize">
                 {item.title}
               </h3>
-              <p className="text-lg text-black font-medium italic font-serif">
+              <p className="mt-2 text-black/70 text-lg leading-relaxed">
                 {item.subtitle}
               </p>
             </div>
-          </button>
+
+            {/* Botón */}
+            <button className="self-start px-4 py-2 rounded-lg bg-[#2E7D32] text-white font-semibold text-sm hover:bg-[#256528] transition">
+              Abrir sección →
+            </button>
+          </div>
         ))}
       </div>
 
@@ -69,6 +75,6 @@ export default function CommunityGrid({ items }: { items: Item[] }) {
         image={active?.image}
         redirect={active ? redirectRoutes[active.title] : ""}
       />
-    </>
+    </div>
   );
 }
