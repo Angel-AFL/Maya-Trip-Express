@@ -2,34 +2,41 @@
 import Layout from "../../layouts/Layout.astro";
 import "../../styles/global.css";
 
-const fotos = [
+const gallery = [
+  "https://upload.wikimedia.org/wikipedia/commons/5/51/Chichen_Itza_3.jpg",
+  "https://images.unsplash.com/photo-1493558103817-58b2924bce98",
   "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-  "/Comunidad/tradicion.png",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
+  "https://www.locogringo.com/sites/default/files/uploads/traditonal-mayan-clothing.jpg",
+  "https://images.unsplash.com/photo-1500534623283-312aade485b7",
+  "https://upload.wikimedia.org/wikipedia/commons/e/e5/Uxmal_Pyramid_of_the_Magician.jpg",
 ];
 ---
 
-<Layout title="Fotos de la Comunidad - Maya Trip Express">
-<section class="w-full bg-papel text-[#1a1a1a] py-12 px-4 md:px-8 font-sans">
+<Layout title="Fotos - Comunidad">
+<section class="w-full bg-papel py-12 px-4 md:px-8 text-[#1a1a1a]">
   <div class="max-w-6xl mx-auto">
 
-    <h1 class="text-5xl font-bold mb-6">Fotos de los Viajeros</h1>
-    <p class="text-lg mb-8">
-      Aquí se muestran imágenes enviadas por la comunidad. Puedes reemplazar o agregar URLs de fotos web 
-      fácilmente desde este archivo.
+    <h2 class="text-5xl md:text-6xl tracking-tight font-semibold mb-10">
+      Fotos de la comunidad
+    </h2>
+
+    <p class="text-lg mb-8 max-w-2xl">
+      Estas son algunas imágenes compartidas por los viajeros. Puedes enviar tus fotos
+      para aparecer en esta sección próximamente.
     </p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {fotos.map((src) => (
-        <div class="aspect-square overflow-hidden rounded-2xl shadow-lg border-2 border-neutral-300">
-          <img src={src} class="w-full h-full object-cover" alt="foto" />
+      {gallery.map(src => (
+        <div class="overflow-hidden rounded-2xl border-2 border-black shadow hover:shadow-xl transition-all">
+          <img src={src} class="w-full h-56 object-cover hover:scale-110 transition-transform duration-500" />
         </div>
       ))}
     </div>
-
-    <div class="mt-10 text-right">
-      <a href="/comunidad" class="underline text-lg">← Volver a comunidad</a>
-    </div>
+          <div class="mt-10">
+              <a href="/comunidad" class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition">
+                   ← Regresar
+              </a>
+          </div>
 
   </div>
 </section>

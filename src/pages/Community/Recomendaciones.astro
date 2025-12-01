@@ -1,52 +1,51 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import "../../styles/global.css";
+
+
+const tips = [
+  {
+    tip: "Viaja temprano",
+    description:
+      "Los mejores horarios para tus tours son entre las 6 am y 9 am. Hay menos gente, mejor clima y mejores fotos.",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+  },
+  {
+    tip: "Hidrátate bien",
+    description:
+      "El clima de Yucatán puede ser intenso, siempre lleva agua y ropa fresca.",
+    image: "https://images.unsplash.com/photo-1514995669114-6081e934b693",
+  },
+];
 ---
 
 <Layout title="Recomendaciones - Maya Trip Express">
-<section class="w-full bg-papel min-h-screen py-12 px-4 md:px-8 text-[#1a1a1a]">
-  <div class="max-w-5xl mx-auto">
+<section class="w-full bg-papel text-black py-12 px-4 md:px-8 font-sans">
+  <div class="max-w-6xl mx-auto">
 
-    <h1 class="text-5xl font-bold text-center mb-8">Recomendaciones</h1>
+    <h2 class="text-5xl md:text-6xl text-center mb-10 font-bold">Recomendaciones</h2>
 
-    <p class="text-lg mb-6">
-      Consejos para mejorar tu experiencia durante tu viaje.
-    </p>
+    <div class="space-y-12">
+      {tips.map((item, i) => (
+        <div class={`flex flex-col md:flex-row gap-8 items-center border-b border-gray-300 pb-8 ${i % 2 !== 0 ? "md:flex-row-reverse" : ""}`}>
+          
+          <div class="md:w-1/2 overflow-hidden rounded-2xl shadow-md">
+            <img src={item.image} class="w-full h-[260px] object-cover hover:scale-105 transition duration-500"/>
+          </div>
 
-    <div class="space-y-10">
+          <div class="md:w-1/2">
+            <h3 class="text-3xl font-bold text-[#2E7D32] mb-2">{item.tip}</h3>
+            <p class="text-lg text-gray-800">{item.description}</p>
+          </div>
 
-      <!-- Card 1 -->
-      <div class="flex flex-col md:flex-row gap-6 items-center">
-        <img 
-          src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=900"
-          class="w-full md:w-1/2 h-64 rounded-xl border border-black object-cover shadow-md"
-        />
-        <div class="p-6 border border-black rounded-xl bg-white/70 w-full md:w-1/2">
-          <h2 class="text-3xl font-bold text-[#2E7D32] mb-2">Planifica con tiempo</h2>
-          <p class="text-lg">
-            Revisa rutas, clima y horarios antes de viajar para evitar contratiempos.
-          </p>
         </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="flex flex-col md:flex-row-reverse gap-6 items-center">
-        <img 
-          src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900"
-          class="w-full md:w-1/2 h-64 rounded-xl border border-black object-cover shadow-md"
-        />
-        <div class="p-6 border border-black rounded-xl bg-white/70 w-full md:w-1/2">
-          <h2 class="text-3xl font-bold text-[#2E7D32] mb-2">Viaja ligero</h2>
-          <p class="text-lg">
-            Lleva solo lo necesario para moverte con comodidad.
-          </p>
-        </div>
-      </div>
-
+      ))}
     </div>
-        <div class="mt-10 text-right">
-           <a href="/comunidad" class="underline text-lg">← Volver a comunidad</a>
-        </div>
+          <div class="mt-10">
+              <a href="/comunidad" class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition">
+                   ← Regresar
+              </a>
+         </div>
   </div>
 </section>
 </Layout>

@@ -1,41 +1,50 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import "../../styles/global.css";
+
+const destacados = [
+  {
+    title: "Nueva ruta premium",
+    description:
+      "Esta semana lanzamos una experiencia exclusiva donde podrás explorar zonas arqueológicas de forma más cómoda y con guías certificados.",
+    image: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
+  },
+  {
+    title: "Evento Maya del mes",
+    description:
+      "Los viajeros participaron en talleres culturales con músicos tradicionales y artesanos locales.",
+    image: "https://images.unsplash.com/photo-1519681393784-d120267933ba",
+  },
+];
 ---
 
-
 <Layout title="Destacados - Maya Trip Express">
-<section class="w-full bg-papel min-h-screen text-[#1a1a1a] py-12 px-4 md:px-8">
-  <div class="max-w-5xl mx-auto">
+<section class="w-full bg-papel text-black py-12 px-4 md:px-8 font-sans">
+  <div class="max-w-6xl mx-auto">
 
-    <h1 class="text-5xl font-bold text-center mb-8">Destacados</h1>
+    <h2 class="text-5xl md:text-6xl mb-10 text-center font-bold">Destacados</h2>
 
-    <p class="text-lg mb-6">
-      Aquí encontrarás lo más relevante de la semana: noticias, actividades y momentos importantes de la comunidad Maya Trip Express.
-    </p>
+    <div class="flex flex-col gap-12">
+      {destacados.map((item) => (
+        <div class="flex flex-col md:flex-row gap-8 items-center border-b border-gray-400 pb-8">
+          
+          <div class="md:w-1/2 overflow-hidden rounded-2xl shadow-md">
+            <img src={item.image} class="w-full h-[280px] object-cover hover:scale-105 transition duration-500"/>
+          </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="md:w-1/2">
+            <h3 class="text-3xl font-bold text-[#2E7D32] mb-3">{item.title}</h3>
+            <p class="text-lg text-gray-800 leading-relaxed">{item.description}</p>
+          </div>
 
-      <!-- Foto agregable por URL -->
-      <div class="rounded-xl overflow-hidden shadow-lg border border-black">
-        <img 
-          src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1200"
-          alt="Destacado"
-          class="w-full h-64 object-cover"
-        />
-      </div>
-
-      <div class="border border-black p-6 rounded-xl bg-white/70">
-        <h2 class="text-3xl font-semibold mb-2 text-[#2E7D32]">El inicio de todo</h2>
-        <p class="text-lg">
-          lo que los viajeros estan diciendo sobre nosotros y sus experiencias recientes aqui se escribira.
-        </p>
-      </div>
-
+        </div>
+      ))}
     </div>
-         <div class="mt-10 text-right">
-              <a href="/comunidad" class="underline text-lg">← Volver a comunidad</a>
-         </div>
+       <div class="mt-10">
+            <a href="/comunidad" class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition">
+             ← Regresar
+            </a>
+      </div>
   </div>
 </section>
 </Layout>
