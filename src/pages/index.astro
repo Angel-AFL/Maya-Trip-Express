@@ -1,68 +1,48 @@
 ---
 import Layout from "../../src/layouts/Layout.astro";
 ---
-
 <Layout title="Xiimbal Maya">
 
   <!-- CARRUSEL -->
-  <section class="relative w-full h-[480px] overflow-hidden">
+  <section class="relative w-full h-[480px] overflow-hidden rounded-b-3xl shadow-2xl">
 
     <!-- SLIDES -->
     <div id="carouselSlides" class="relative h-full">
-
       <div class="carousel-slide absolute inset-0 opacity-100 transition-opacity duration-700">
-        <img
-          src="https://periodicoviaje.com/wp-content/uploads/2020/06/yucatan.jpg"
-          class="w-full h-full object-cover"
-        />
+        <img src="https://i0.wp.com/culturacolectiva.com/wp-content/uploads/2023/02/UWAVX3RN6JGZ3EJMK7K3JZ6A4Q.jpg?resize=750%2C375&ssl=1"
+          class="w-full h-full object-cover" />
       </div>
-
       <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700">
-        <img
-          src="https://www.eloriente.net/home/wp-content/uploads/2014/11/feria_mundial_de_turismo_cultural.jpg"
-          class="w-full h-full object-cover"
-        />
+        <img src="https://www.revistatravel.mx/images/showid2/5814006?w=981&zc=4"
+          class="w-full h-full object-cover" />
       </div>
-
       <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-700">
-        <img
-          src="https://i0.wp.com/culturacolectiva.com/wp-content/uploads/2023/02/UWAVX3RN6JGZ3EJMK7K3JZ6A4Q.jpg?resize=750%2C375&ssl=1"
-          class="w-full h-full object-cover"
-        />
+        <img src="https://puntomedio.mx/wp-content/uploads/2023/08/Yucatan.jpeg"
+          class="w-full h-full object-cover" />
       </div>
-
     </div>
 
     <!-- TEXTO ENCIMA -->
-    <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-8">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-xl">
+    <div class="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-8 animate-fadeIn">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-xl animate-slideDown">
         Bienvenido a Xiimbal Maya
       </h1>
-
-      <p class="mt-4 text-lg md:text-xl text-white/90 max-w-3xl">
+      <p class="mt-4 text-lg md:text-xl text-white/90 max-w-3xl animate-slideUp">
         Explora la Zona Maya de forma inteligente y culturalmente auténtica.
       </p>
-
-      <a
-        href="/maps"
-        class="mt-6 bg-[#23C7A4] hover:bg-[#1da689] text-white font-bold px-6 py-3 rounded-xl shadow-lg transition"
-      >
+      <a href="/maps"
+        class="mt-6 bg-[#23C7A4] hover:bg-[#1da689] text-white font-bold px-6 py-3 rounded-4xl">
         Explorar Mapa Interactivo
       </a>
     </div>
 
     <!-- FLECHAS -->
-    <button
-      id="prevSlide"
-      class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full"
-    >
+    <button id="prevSlide"
+      class="absolute left-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full">
       <span class="text-2xl">&larr;</span>
     </button>
-
-    <button
-      id="nextSlide"
-      class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full"
-    >
+    <button id="nextSlide"
+      class="absolute right-5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full">
       <span class="text-2xl">&rarr;</span>
     </button>
 
@@ -82,12 +62,8 @@ import Layout from "../../src/layouts/Layout.astro";
     const dots = document.querySelectorAll(".dot");
 
     function showSlide(n) {
-      slides.forEach((slide, i) => {
-        slide.style.opacity = i === n ? "1" : "0";
-      });
-      dots.forEach((dot, i) => {
-        dot.style.opacity = i === n ? "1" : "0.4";
-      });
+      slides.forEach((slide, i) => slide.style.opacity = i === n ? "1" : "0");
+      dots.forEach((dot, i) => dot.style.opacity = i === n ? "1" : "0.4");
     }
 
     function next() {
@@ -96,45 +72,171 @@ import Layout from "../../src/layouts/Layout.astro";
     }
 
     document.getElementById("nextSlide").onclick = next;
-
     document.getElementById("prevSlide").onclick = () => {
       index = (index - 1 + slides.length) % slides.length;
       showSlide(index);
     };
 
     setInterval(next, 5000);
-
     showSlide(index);
   </script>
 
   <!-- SOBRE NOSOTROS -->
-  <section class="mt-20 bg-white p-10 max-w-5xl mx-auto rounded-2xl shadow">
-    <h2 class="text-3xl font-bold text-[#0A3A52] mb-4">Sobre Nosotros</h2>
-    <p class="text-lg leading-relaxed text-[#0A3A52]">
-      Somos una plataforma dedicada al turismo cultural Maya, ofreciendo rutas, guías,
-      hoteles, pueblos mágicos y experiencias auténticas para viajeros que desean explorar
-      la región de forma responsable, inteligente y profunda.
-    </p>
+  <section class="mt-32 max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-8">
+    <div class="bg-white p-10 rounded-2xl shadow-xl border-l-8 border-[#23C7A4] animate-fadeIn">
+      <h2 class="text-3xl font-bold text-[#0A3A52] mb-4">Sobre Nosotros</h2>
+      <p class="text-lg leading-relaxed text-[#0A3A52] mb-4">
+        Xiimbal Maya conecta a los viajeros con experiencias reales: pueblos, rutas, gastronomía, arqueología y tradiciones vivas que merecen ser compartidas.
+      </p>
+      <p class="text-lg text-[#23C7A4] font-semibold">
+        “No solo mostramos lugares. mostramos historias”.
+      </p>
+      <button class="mt-6 bg-[#23C7A4] text-white px-5 py-3 rounded-xl shadow-md hover:bg-[#1da689] transition hover:scale-105">
+        Más información
+      </button>
+    </div>
+    <div>
+      <img src="https://assets.stanford.edu/i/2000x800/smart/filters:quality(60)/f/103430/5500x2750/4a208d73e2/family-vacation-mayan-ruins-hero.jpg"
+        class="rounded-2xl shadow-2xl object-cover w-full h-[350px]" />
+    </div>
   </section>
 
-  <!-- TARJETAS -->
-  <section class="mt-20 grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-
-    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#23C7A4]">
-      <h3 class="text-xl font-bold text-[#0A3A52] mb-3">Mapa Interactivo</h3>
-      <p class="text-[#0A3A52]">Explora zonas arqueológicas, rutas y pueblos.</p>
+ <!-- TOURS DESTACADOS -->
+<section class="mt-32 max-w-6xl mx-auto px-8">
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition hover:shadow-2xl cursor-pointer">
+      <img src="https://www.pretpourlaventure.com/wp-content/uploads/2023/02/carte-via-fluvia-350x263.jpg" class="h-48 w-full object-cover">
+      <div class="p-4">
+        <h3 class="font-semibold">Mapa Interactivo</h3>
+        <p class="text-gray-600 text-sm mt-1">Explora zonas arqueológicas, rutas y pueblos.</p>
+      </div>
     </div>
-
-    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#23C7A4]">
-      <h3 class="text-xl font-bold text-[#0A3A52] mb-3">Experiencias</h3>
-      <p class="text-[#0A3A52]">Cultura, gastronomía y aventura en la región Maya.</p>
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition hover:shadow-2xl cursor-pointer">
+      <img src="https://tse3.mm.bing.net/th/id/OIP.Q-4AizKhcDn1WvthQmOC7QAAAA?rs=1&pid=ImgDetMain&o=7&rm=3" class="h-48 w-full object-cover">
+      <div class="p-4">
+        <h3 class="font-semibold">Experiencias</h3>
+        <p class="text-gray-600 text-sm mt-1">Cultura, gastronomía y aventura Maya.</p>
+      </div>
     </div>
-
-    <div class="bg-white shadow-xl p-6 rounded-2xl border border-[#23C7A4]">
-      <h3 class="text-xl font-bold text-[#0A3A52] mb-3">Hoteles</h3>
-      <p class="text-[#0A3A52]">Hospedajes recomendados cerca de sitios históricos.</p>
+    <div class="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition hover:shadow-2xl cursor-pointer">
+      <img src="https://secure.s.forbestravelguide.com/img/properties/trs-yucatan-hotel/extra-large/trs-yucatan-hotel-Zentropia-Palladium-Spa-Wellness.jpg" class="h-48 w-full object-cover">
+      <div class="p-4">
+        <h3 class="font-semibold">Hoteles</h3>
+        <p class="text-gray-600 text-sm mt-1">Hospedajes cerca de sitios históricos.</p>
+      </div>
     </div>
+  </div>
+</section>
 
+
+ 
+  <!-- TESTIMONIOS CON IMAGEN -->
+  <section class="mt-32 bg-[#f3f3f3] py-16 px-8">
+    <h2 class="text-2xl font-bold text-[#0A3A52] mb-10 text-center">Lo que dicen los viajeros</h2>
+    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+      
+      <div class="bg-white p-6 rounded-xl shadow-md hover:scale-105 transition hover:shadow-2xl flex flex-col items-center text-center">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-20 h-20 rounded-full mb-4">
+        <p class="text-gray-700 mb-2">“Una experiencia cultural inolvidable. ¡Cada lugar cuenta una historia!”</p>
+        <h4 class="font-semibold text-[#23C7A4]">Ana M.</h4>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md hover:scale-105 transition hover:shadow-2xl flex flex-col items-center text-center">
+        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="w-20 h-20 rounded-full mb-4">
+        <p class="text-gray-700 mb-2">“Xiimbal Maya me permitió conocer lugares auténticos y poco turísticos.”</p>
+        <h4 class="font-semibold text-[#23C7A4]">Carlos P.</h4>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md hover:scale-105 transition hover:shadow-2xl flex flex-col items-center text-center">
+        <img src="https://randomuser.me/api/portraits/women/45.jpg" class="w-20 h-20 rounded-full mb-4">
+        <p class="text-gray-700 mb-2">“El tour fue organizado y la experiencia gastronómica espectacular.”</p>
+        <h4 class="font-semibold text-[#23C7A4]">Laura G.</h4>
+      </div>
+
+    </div>
   </section>
+
+  <!-- FOOTER -->
+  <footer class="mt-32 bg-[#1e1e1e] text-white py-16 px-8">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+      <div>
+        <h2 class="text-3xl font-extrabold flex items-center gap-2">
+          <span class="text-[#23C7A4]">Xiimbal</span>.Maya
+        </h2>
+        <p class="mt-4 text-gray-300 leading-relaxed">
+          Plataforma turística enfocada en experiencias auténticas de la región Maya.
+        </p>
+        <p class="mt-4 text-[#23C7A4] font-semibold">“Conecta con la esencia Maya”.</p>
+        <div class="flex gap-3 mt-6">
+          <a class="bg-gray-700 hover:bg-[#23C7A4] p-3 rounded-lg transition">
+            <img src="https://img.icons8.com/?size=512&id=16713&format=png" class="w-6"/>
+          </a>
+          <a class="bg-gray-700 hover:bg-[#23C7A4] p-3 rounded-lg transition">
+            <img src="https://img.icons8.com/?size=512&id=32292&format=png" class="w-6"/>
+          </a>
+          <a class="bg-gray-700 hover:bg-[#23C7A4] p-3 rounded-lg transition">
+            <img src="https://img.icons8.com/?size=512&id=118466&format=png" class="w-6"/>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Navegación</h3>
+        <ul class="space-y-2 text-gray-300">
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Inicio</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Sobre Nosotros</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Experiencias</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Mapa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Tours</h3>
+        <ul class="space-y-2 text-gray-300">
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Uxmal</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Chichén Itzá</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Ruta Puuc</a></li>
+          <li class="hover:text-[#23C7A4] transition"><a href="#">Cenotes Sagrados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Galería</h3>
+        <div class="grid grid-cols-3 gap-2">
+          <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+          <img src="https://images.unsplash.com/photo-1589391886645-d51941baf7a2?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+          <img src="https://images.unsplash.com/photo-1529330274370-0f3c37fcf0f4?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+          <img src="https://images.unsplash.com/photo-1516214104703-d870798883c9?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+          <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=300&q=60" class="w-full h-20 object-cover rounded-lg" />
+        </div>
+      </div>
+    </div>
+  </footer>
 
 </Layout>
+
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn { animation: fadeIn 1.2s ease-out; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float { animation: float 3s ease-in-out infinite; }
+
+@keyframes slideDown {
+  0% { opacity:0; transform: translateY(-20px); }
+  100% { opacity:1; transform: translateY(0); }
+}
+.animate-slideDown { animation: slideDown 1s ease-out; }
+
+@keyframes slideUp {
+  0% { opacity:0; transform: translateY(20px); }
+  100% { opacity:1; transform: translateY(0); }
+}
+.animate-slideUp { animation: slideUp 1s ease-out; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+</style>
