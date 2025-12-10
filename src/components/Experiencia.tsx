@@ -31,12 +31,12 @@ import {
 */
 
 // --- IMPORTACIONES REALES (DESCOMENTAR EN ASTRO) ---
-// import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-// import "leaflet/dist/leaflet.css";
-// import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 // --- CONFIGURACIÓN DE ICONOS (DESCOMENTAR EN ASTRO) ---
-/*
+
 const DefaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
@@ -46,7 +46,6 @@ const DefaultIcon = L.icon({
   shadowSize: [41, 41],
 });
 L.Marker.prototype.options.icon = DefaultIcon;
-*/
 
 // --- INTERFACES & TIPOS ---
 interface Experiencia {
@@ -78,7 +77,7 @@ interface ExperienceCardProps {
 
 /* =================================================================================
    ⬇️ COMPONENTE MAPA TURISTICO (MOCK - SOLO PARA VISTA PREVIA) ⬇️
-   ================================================================================= */
+   ================================================================================= 
 const MapTuristico: React.FC<{
   ubicaciones: Ubicacion[];
   ubicacionActiva: Ubicacion | null;
@@ -103,12 +102,20 @@ const MapTuristico: React.FC<{
   );
 };
 
+*/
+
 /* =================================================================================
    ⬇️ COMPONENTE MAPA TURISTICO (REAL - PARA ASTRO) ⬇️
    Descomenta este bloque y utilízalo en lugar del mock anterior.
    ================================================================================= */
-/*
-const MapController = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
+
+const MapController = ({
+  center,
+  zoom,
+}: {
+  center: [number, number];
+  zoom: number;
+}) => {
   const map = useMap();
   useEffect(() => {
     map.flyTo(center, zoom, { duration: 1.5 });
@@ -129,15 +136,27 @@ const MapTuristico: React.FC<{
 
   return (
     <div style={{ width: "100%", height: "100%", zIndex: 0 }}>
-      <MapContainer center={defaultCenter} zoom={defaultZoom} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
-        <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <MapContainer
+        center={defaultCenter}
+        zoom={defaultZoom}
+        scrollWheelZoom={true}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
         <MapController center={activeCenter} zoom={activeZoom} />
         {ubicaciones.map((ubi, idx) => (
           <Marker key={idx} position={[ubi.lat, ubi.lng]}>
             <Popup>
               <div style={{ textAlign: "center", fontFamily: "system-ui" }}>
-                <strong style={{ color: "#16a34a", fontSize: "14px" }}>{ubi.nombre}</strong>
-                <p style={{ margin: "5px 0", fontSize: "12px" }}>{ubi.descripcion}</p>
+                <strong style={{ color: "#16a34a", fontSize: "14px" }}>
+                  {ubi.nombre}
+                </strong>
+                <p style={{ margin: "5px 0", fontSize: "12px" }}>
+                  {ubi.descripcion}
+                </p>
               </div>
             </Popup>
           </Marker>
@@ -146,7 +165,6 @@ const MapTuristico: React.FC<{
     </div>
   );
 };
-*/
 
 // --- DATOS AMPLIADOS ---
 const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
