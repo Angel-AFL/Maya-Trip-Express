@@ -13,31 +13,37 @@ const gallery = [
 ---
 
 <Layout title="Fotos - Comunidad">
-<section class="w-full bg-papel py-12 px-4 md:px-8 text-[#1a1a1a]">
-  <div class="max-w-6xl mx-auto">
+  <section class="w-full py-12 px-4 md:px-8 text-[#1a1a1a]">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="ext-5xl md:text-6xl text-center mb-10 font-bold">
+        Fotos de la comunidad
+      </h2>
 
-    <h2 class="ext-5xl md:text-6xl text-center mb-10 font-bold">
-      Fotos de la comunidad
-    </h2>
+      <p class="text-lg mb-8 max-w-2xl">
+        Estas son algunas imágenes compartidas por los viajeros. Puedes enviar
+        tus fotos para aparecer en esta sección próximamente.
+      </p>
 
-    <p class="text-lg mb-8 max-w-2xl">
-      Estas son algunas imágenes compartidas por los viajeros. Puedes enviar tus fotos
-      para aparecer en esta sección próximamente.
-    </p>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {gallery.map(src => (
-        <div class="overflow-hidden rounded-2xl border-2 border-black shadow hover:shadow-xl transition-all">
-          <img src={src} class="w-full h-56 object-cover hover:scale-110 transition-transform duration-500" />
-        </div>
-      ))}
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {
+          gallery.map((src) => (
+            <div class="overflow-hidden rounded-2xl border-2 border-black shadow hover:shadow-xl transition-all">
+              <img
+                src={src}
+                class="w-full h-56 object-cover hover:scale-110 transition-transform duration-500"
+              />
+            </div>
+          ))
+        }
+      </div>
+      <div class="mt-10">
+        <a
+          href="/comunidad"
+          class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition"
+        >
+          ← Regresar
+        </a>
+      </div>
     </div>
-          <div class="mt-10">
-              <a href="/comunidad" class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition">
-                   ← Regresar
-              </a>
-          </div>
-
-  </div>
-</section>
+  </section>
 </Layout>
