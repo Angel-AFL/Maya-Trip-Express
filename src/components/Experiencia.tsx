@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
+import { supabase } from "../supabaseClient"; // ⚠️ ASEGURATE QUE ESTA RUTA SEA CORRECTA
 import {
   Palmtree,
   Waves,
@@ -24,10 +25,9 @@ import {
 } from "lucide-react";
 
 /* --- ⚠️ INSTRUCCIONES PARA TU PROYECTO ASTRO ⚠️ ---
-   1. Instala las dependencias: npm install react-leaflet leaflet @types/leaflet
+   1. Instala las dependencias: npm install react-leaflet leaflet @types/leaflet @supabase/supabase-js
    2. DESCOMENTA el bloque de "IMPORTACIONES REALES" abajo.
    3. DESCOMENTA la "CONFIGURACIÓN DE ICONOS".
-   4. INTERCAMBIA los componentes: Comenta el 'MapTuristico' (Mock) y descomenta el 'MapTuristico' (Real).
 */
 
 // --- IMPORTACIONES REALES (DESCOMENTAR EN ASTRO) ---
@@ -36,7 +36,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 // --- CONFIGURACIÓN DE ICONOS (DESCOMENTAR EN ASTRO) ---
-
 const DefaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
@@ -67,7 +66,7 @@ interface Ubicacion {
   precio?: string;
   horario?: string;
   destacado?: boolean;
-  categoria?: string; // Agregado para el planificador
+  categoria?: string;
 }
 
 interface ExperienceCardProps {
@@ -75,98 +74,7 @@ interface ExperienceCardProps {
   onExplore: (categoria: string) => void;
 }
 
-/* =================================================================================
-   ⬇️ COMPONENTE MAPA TURISTICO (MOCK - SOLO PARA VISTA PREVIA) ⬇️
-   ================================================================================= 
-const MapTuristico: React.FC<{
-  ubicaciones: Ubicacion[];
-  ubicacionActiva: Ubicacion | null;
-}> = ({ ubicaciones }) => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        background: "#e0e7ff",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#4f46e5",
-      }}
-    >
-      <p>
-        Mapa cargado con {ubicaciones.length} ubicaciones. (Descomenta Leaflet
-        en Astro)
-      </p>
-    </div>
-  );
-};
-
-*/
-
-/* =================================================================================
-   ⬇️ COMPONENTE MAPA TURISTICO (REAL - PARA ASTRO) ⬇️
-   Descomenta este bloque y utilízalo en lugar del mock anterior.
-   ================================================================================= */
-
-const MapController = ({
-  center,
-  zoom,
-}: {
-  center: [number, number];
-  zoom: number;
-}) => {
-  const map = useMap();
-  useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
-  }, [center, zoom, map]);
-  return null;
-};
-
-const MapTuristico: React.FC<{
-  ubicaciones: Ubicacion[];
-  ubicacionActiva: Ubicacion | null;
-}> = ({ ubicaciones, ubicacionActiva }) => {
-  const defaultCenter: [number, number] = [20.6, -88.6];
-  const defaultZoom = 8;
-  const activeCenter: [number, number] = ubicacionActiva
-    ? [ubicacionActiva.lat, ubicacionActiva.lng]
-    : defaultCenter;
-  const activeZoom = ubicacionActiva ? 12 : defaultZoom;
-
-  return (
-    <div style={{ width: "100%", height: "100%", zIndex: 0 }}>
-      <MapContainer
-        center={defaultCenter}
-        zoom={defaultZoom}
-        scrollWheelZoom={true}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <MapController center={activeCenter} zoom={activeZoom} />
-        {ubicaciones.map((ubi, idx) => (
-          <Marker key={idx} position={[ubi.lat, ubi.lng]}>
-            <Popup>
-              <div style={{ textAlign: "center", fontFamily: "system-ui" }}>
-                <strong style={{ color: "#16a34a", fontSize: "14px" }}>
-                  {ubi.nombre}
-                </strong>
-                <p style={{ margin: "5px 0", fontSize: "12px" }}>
-                  {ubi.descripcion}
-                </p>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </div>
-  );
-};
-
-// --- DATOS AMPLIADOS ---
+// --- DATOS AMPLIADOS (IMPORTANTE: NO BORRAR) ---
 const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
   Naturaleza: [
     {
@@ -281,11 +189,72 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
   ],
 };
 
-// --- COMPONENTE NUEVO: PLANIFICADOR DE VIAJE ---
+/* =================================================================================
+   ⬇️ COMPONENTES DE MAPA ⬇️
+   ================================================================================= */
+
+const MapController = ({
+  center,
+  zoom,
+}: {
+  center: [number, number];
+  zoom: number;
+}) => {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, zoom, { duration: 1.5 });
+  }, [center, zoom, map]);
+  return null;
+};
+
+const MapTuristico: React.FC<{
+  ubicaciones: Ubicacion[];
+  ubicacionActiva: Ubicacion | null;
+}> = ({ ubicaciones, ubicacionActiva }) => {
+  const defaultCenter: [number, number] = [20.6, -88.6];
+  const defaultZoom = 8;
+  const activeCenter: [number, number] = ubicacionActiva
+    ? [ubicacionActiva.lat, ubicacionActiva.lng]
+    : defaultCenter;
+  const activeZoom = ubicacionActiva ? 12 : defaultZoom;
+
+  return (
+    <div style={{ width: "100%", height: "100%", zIndex: 0 }}>
+      <MapContainer
+        center={defaultCenter}
+        zoom={defaultZoom}
+        scrollWheelZoom={true}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MapController center={activeCenter} zoom={activeZoom} />
+        {ubicaciones.map((ubi, idx) => (
+          <Marker key={idx} position={[ubi.lat, ubi.lng]}>
+            <Popup>
+              <div style={{ textAlign: "center", fontFamily: "system-ui" }}>
+                <strong style={{ color: "#16a34a", fontSize: "14px" }}>
+                  {ubi.nombre}
+                </strong>
+                <p style={{ margin: "5px 0", fontSize: "12px" }}>
+                  {ubi.descripcion}
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
+  );
+};
+
+// --- COMPONENTE: PLANIFICADOR DE VIAJE (CON SUPABASE) ---
 const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [itinerary, setItinerary] = useState<Ubicacion[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Función para extraer precio numérico aproximado
   const getPriceNumber = (priceString?: string) => {
     if (!priceString || priceString.toLowerCase().includes("gratis")) return 0;
     const num = parseInt(priceString.replace(/\D/g, ""));
@@ -300,12 +269,47 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   }, [itinerary]);
 
   const addToItinerary = (item: Ubicacion, category: string) => {
-    if (itinerary.some((i) => i.nombre === item.nombre)) return; // Evitar duplicados
+    if (itinerary.some((i) => i.nombre === item.nombre)) return;
     setItinerary([...itinerary, { ...item, categoria: category }]);
   };
 
   const removeFromItinerary = (nombre: string) => {
     setItinerary(itinerary.filter((i) => i.nombre !== nombre));
+  };
+
+  // --- Lógica de Guardado en Supabase ---
+  const handleSaveItinerary = async () => {
+    if (itinerary.length === 0) {
+      alert("Tu itinerario está vacío. Añade destinos antes de guardar.");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      // Intenta guardar en la tabla 'itinerarios'
+      const { data, error } = await supabase
+        .from("itinerarios")
+        .insert([
+          {
+            lugares: itinerary, // Array JSON
+            costo_total: totalCost,
+          },
+        ])
+        .select();
+
+      if (error) throw error;
+
+      alert("¡Ruta guardada exitosamente en la nube!");
+    } catch (error: any) {
+      console.error("Error al guardar:", error);
+      alert(
+        "Error al guardar (Revisa consola y conexión): " +
+          (error.message || "Desconocido")
+      );
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -330,6 +334,7 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       >
         <button
           onClick={onBack}
+          disabled={isSaving}
           style={{
             display: "flex",
             alignItems: "center",
@@ -339,6 +344,7 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             color: "#64748b",
             cursor: "pointer",
             fontSize: "16px",
+            opacity: isSaving ? 0.5 : 1,
           }}
         >
           <ArrowLeft size={20} /> Volver
@@ -354,7 +360,7 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         >
           <Compass size={28} color="#8b5cf6" /> Mi Plan de Viaje
         </h2>
-        <div style={{ width: "80px" }}></div> {/* Espaciador */}
+        <div style={{ width: "80px" }}></div>
       </div>
 
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
@@ -365,11 +371,14 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             padding: "20px",
             overflowY: "auto",
             borderRight: "1px solid #e2e8f0",
+            opacity: isSaving ? 0.7 : 1,
+            pointerEvents: isSaving ? "none" : "auto",
           }}
         >
           <h3 style={{ marginTop: 0, color: "#475569" }}>
             Explora y añade destinos
           </h3>
+          {/* Se usa ubicacionesPorCategoria aquí. Si esto no está definido arriba, la app explota */}
           {Object.entries(ubicacionesPorCategoria).map(([cat, items]) => (
             <div key={cat} style={{ marginBottom: "20px" }}>
               <h4
@@ -462,6 +471,8 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             overflowY: "auto",
             display: "flex",
             flexDirection: "column",
+            opacity: isSaving ? 0.7 : 1,
+            pointerEvents: isSaving ? "none" : "auto",
           }}
         >
           <h3
@@ -587,7 +598,7 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             </div>
           )}
 
-          {/* RESUMEN DE COSTOS */}
+          {/* RESUMEN DE COSTOS Y BOTÓN GUARDAR */}
           <div
             style={{
               marginTop: "20px",
@@ -595,6 +606,7 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               color: "white",
               padding: "20px",
               borderRadius: "12px",
+              pointerEvents: "auto",
             }}
           >
             <div
@@ -629,21 +641,28 @@ const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 <span style={{ fontWeight: "bold" }}>{totalCost} MXN</span>
               </div>
             </div>
+
             <button
               style={{
                 width: "100%",
                 marginTop: "15px",
-                background: "#8b5cf6",
+                background: isSaving ? "#64748b" : "#8b5cf6",
                 color: "white",
                 border: "none",
                 padding: "12px",
                 borderRadius: "8px",
                 fontWeight: "bold",
-                cursor: "pointer",
+                cursor: isSaving ? "wait" : "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                transition: "background 0.3s",
               }}
-              onClick={() => alert("¡Itinerario guardado! (Simulación)")}
+              onClick={handleSaveItinerary}
+              disabled={isSaving}
             >
-              Guardar Mi Ruta
+              {isSaving ? "Guardando..." : "Guardar Mi Ruta en la Nube"}
             </button>
           </div>
         </div>
