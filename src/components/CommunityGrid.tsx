@@ -53,14 +53,14 @@ export default function CommunityGrid({ items }: { items: Item[] }) {
               <h3 className="text-3xl font-extrabold text-[#2E7D32] capitalize">
                 {item.title}
               </h3>
-              <p className="mt-2 text-black/70 text-lg leading-relaxed">
+              <p className="mt-2 text-black/70 text-lg leading-relaxed self-center">
                 {item.subtitle}
               </p>
             </div>
 
             {/* Botón */}
-            <button className="self-start px-4 py-2 rounded-lg bg-[#2E7D32] text-white font-semibold text-sm hover:bg-[#256528] transition">
-              Abrir sección →
+            <button className="self-center px-8 py-2 rounded-lg bg-[#2E7D32] text-white font-semibold text-sm hover:bg-[#256528] transition">
+              visitar
             </button>
           </div>
         ))}
