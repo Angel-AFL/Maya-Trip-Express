@@ -10,7 +10,8 @@ import {
   Sun,
   Heart,
   MessageSquare,
-  MapPin, // Icono para la nueva sección de atractivos
+  MapPin,
+  Star, // Nuevo icono para rating o destacado
 } from "lucide-react";
 
 // ---------------- TYPES ----------------
@@ -43,7 +44,7 @@ const pueblosIniciales: Pueblo[] = [
     id: 1,
     titulo: "Mahahual",
     descripcion:
-      "Destino tranquilo con aguas turquesa, perfecto para snorkel y relajación frente al mar.",
+      "Destino tranquilo con aguas turquesa, perfecto para snorkel y relajación frente al mar, conocido por su gran arrecife de coral.",
     categoria: "Costa Maya",
     imagen:
       "https://rinconesdemexico.com/wp-content/uploads/atardecer-en-Mahahual-2048x1459.jpg",
@@ -51,7 +52,7 @@ const pueblosIniciales: Pueblo[] = [
     comentarios: [
       { id: 1, autor: "Carla P.", texto: "Un lugar increíblemente tranquilo y hermoso. ¡Volvería mil veces!", fecha: "23/07/2025" }
     ],
-    tradiciones: ["Pesca artesanal", "Gastronomía a base de mariscos"],
+    tradiciones: ["Pesca artesanal", "Gastronomía a base de mariscos frescos"],
     atractivos: ["Arrecife Chinchorro", "Faro de Mahahual"],
     ubicacion: "Al sur de Quintana Roo, cerca de la frontera con Belice.",
     tiendasCercanas: ["Tienda de buceo Gato", "Oxxo Costa"],
@@ -60,13 +61,15 @@ const pueblosIniciales: Pueblo[] = [
     id: 2,
     titulo: "Bacalar",
     descripcion:
-      "Famoso por la Laguna de los Siete Colores, una maravilla natural única.",
-    categoria: "Laguna",
+      "Famoso por la Laguna de los Siete Colores, una maravilla natural única con cenotes y fuerte histórico.",
+    categoria: "Laguna Mágica",
     imagen:
       "https://images.sipse.com/ottdLeSfpShKaxDhVml3FAB-loM=/1654x1016/smart/2019/09/02/1567452177126.jpg",
     fotos: ["https://picsum.photos/id/1040/300/200"],
-    comentarios: [],
-    tradiciones: ["Navegación en palapa", "Cultura lacustre"],
+    comentarios: [
+      { id: 2, autor: "Viajero Q.", texto: "El color del agua es irreal. ¡Recomendado tomar un tour en velero!", fecha: "01/08/2025" }
+    ],
+    tradiciones: ["Navegación en palapa", "Cultura lacustre", "Festival de la Cumbia"],
     atractivos: ["Fuerte de San Felipe", "Cenote Azul", "Rápidos de Bacalar"],
     ubicacion: "A 40 km al norte de Chetumal, en el interior de Q. Roo.",
     tiendasCercanas: ["Mercado Municipal", "Farmacia Similares"],
@@ -75,8 +78,8 @@ const pueblosIniciales: Pueblo[] = [
     id: 3,
     titulo: "Xcalak",
     descripcion:
-      "Uno de los rincones más vírgenes del Caribe mexicano, ideal para buceo y pesca deportiva.",
-    categoria: "Naturaleza",
+      "Uno de los rincones más vírgenes y remotos del Caribe mexicano, ideal para buceo y pesca deportiva de clase mundial.",
+    categoria: "Naturaleza Pura",
     imagen: "https://en-yucatan.com.mx/fotos/costa-maya/xcalak-hero.jpg",
     fotos: ["https://picsum.photos/id/1037/300/200", "https://picsum.photos/id/1039/300/200", "https://picsum.photos/id/1038/300/200"],
     comentarios: [
@@ -87,27 +90,26 @@ const pueblosIniciales: Pueblo[] = [
     ubicacion: "Punta sur del Estado de Quintana Roo, muy remoto.",
     tiendasCercanas: ["Minisuper El Pescador"],
   },
-  // --- NUEVOS LUGARES ---
   {
     id: 4,
     titulo: "Tulum",
     descripcion:
-      "Famoso por sus ruinas mayas frente al mar Caribe y su ambiente bohemio.",
-    categoria: "Cultural",
+      "Famoso por sus ruinas mayas frente al mar Caribe y su vibrante ambiente bohemio y cosmopolita.",
+    categoria: "Cultural & Playa",
     imagen: "https://tse1.mm.bing.net/th/id/OIP.r82XrEdMLz8oAeqjdPYavQHaFj?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
     fotos: ["https://picsum.photos/id/237/300/200"],
     comentarios: [],
     tradiciones: ["Ceremonias de Temazcal", "Yoga y vida saludable"],
     atractivos: ["Zona Arqueológica", "Gran Cenote", "Playa Paraíso"],
     ubicacion: "A 130 km al sur de Cancún, en la Riviera Maya.",
-    tiendasCercanas: ["Super Aki", "boutiques de diseño"],
+    tiendasCercanas: ["Super Aki", "Boutiques de diseño"],
   },
   {
     id: 5,
     titulo: "Isla Mujeres",
     descripcion:
-      "Una joya caribeña de ambiente relajado, perfecta para andar en carrito de golf.",
-    categoria: "Isla",
+      "Una joya caribeña de ambiente relajado, perfecta para andar en carrito de golf y disfrutar de la mejor playa de México.",
+    categoria: "Isla Tranquila",
     imagen: "https://tse4.mm.bing.net/th/id/OIP.hKJa-We1ncFpT52AAh1oVAHaE8?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
     fotos: ["https://picsum.photos/id/238/300/200", "https://picsum.photos/id/239/300/200"],
     comentarios: [],
@@ -120,8 +122,8 @@ const pueblosIniciales: Pueblo[] = [
     id: 6,
     titulo: "Cozumel",
     descripcion:
-      "La isla más grande de México, meca del buceo por sus impresionantes formaciones de coral.",
-    categoria: "Isla",
+      "La isla más grande de México, meca del buceo por sus impresionantes formaciones de coral y su atmósfera de puerto internacional.",
+    categoria: "Isla de Buceo",
     imagen: "https://cab3fd4ae07e840188c7-50d1b5a40539d13a7a683523a0ca1dbf.ssl.cf1.rackcdn.com/u/hero-images/La-Ceiba-Hero-Image.jpg",
     fotos: [],
     comentarios: [
@@ -134,7 +136,7 @@ const pueblosIniciales: Pueblo[] = [
   },
 ];
 
-// (ImageModal se mantiene igual)
+// (ImageModal se mantiene igual en funcionalidad, solo cambia el estilo)
 // ---------------- MODAL ----------------
 const ImageModal: React.FC<{
   abierta: boolean;
@@ -165,7 +167,7 @@ const ImageModal: React.FC<{
     <div style={styles.modalOverlay} onClick={onCerrar}>
       <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button onClick={onCerrar} style={styles.modalClose}>
-          <X size={28} color="white"/>
+          <X size={24} color="white"/>
         </button>
 
         <div style={styles.modalBody}>
@@ -175,7 +177,7 @@ const ImageModal: React.FC<{
             }
             style={styles.modalNav}
           >
-            <ChevronLeft size={32} />
+            <ChevronLeft size={28} />
           </button>
 
           <img
@@ -188,13 +190,13 @@ const ImageModal: React.FC<{
             onClick={() => setIndex((i) => (i + 1) % images.length)}
             style={styles.modalNav}
           >
-            <ChevronRight size={32} />
+            <ChevronRight size={28} />
           </button>
         </div>
 
         <div style={styles.modalFooter}>
-          <small>
-            {index + 1} / {images.length}
+          <small style={styles.modalFooterText}>
+            {index + 1} de {images.length}
           </small>
         </div>
       </div>
@@ -203,7 +205,7 @@ const ImageModal: React.FC<{
 };
 
 
-// ---------------- DETALLE CARD (El diseño anterior completo, ahora con nueva info) ----------------
+// ---------------- DETALLE CARD (Diseño elegante y organizado) ----------------
 const PuebloDetailCard: React.FC<{
   pueblo: Pueblo;
   onVolver: () => void;
@@ -230,8 +232,8 @@ const PuebloDetailCard: React.FC<{
 
   return (
     <article style={styles.detailCard}>
-      <button onClick={onVolver} style={styles.btnBack}>
-        <ChevronLeft size={18} /> Volver a Publicaciones
+      <button onClick={onVolver} style={styles.btnBackDetail}>
+        <ChevronLeft size={16} /> Volver a Expediciones
       </button>
 
       <div style={styles.headerImageDetail(pueblo.imagen)} />
@@ -244,34 +246,36 @@ const PuebloDetailCard: React.FC<{
 
         <p style={styles.descriptionDetail}>{pueblo.descripcion}</p>
         
-        {/* Sección de Ubicación y Atractivos (NUEVA) */}
+        {/* Sección de Ubicación y Atractivos */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}><MapPin size={18} /> Ubicación y Servicios</h3>
+          <h3 style={styles.sectionTitle}><MapPin size={18} /> Ubicación y Servicios Esenciales</h3>
           
-          <div style={styles.infoSection}>
-            <h4>Dónde queda</h4>
-            <p style={styles.infoText}>{pueblo.ubicacion}</p>
-          </div>
+          <div style={styles.infoGrid}>
+            <div style={styles.infoBox}>
+              <h4 style={styles.infoTitle}>Ubicación General</h4>
+              <p style={styles.infoText}>{pueblo.ubicacion}</p>
+            </div>
 
-          <div style={styles.infoSection}>
-            <h4>Atractivos Principales</h4>
-            <ul style={styles.simpleList}>
-              {pueblo.atractivos.map((a, i) => <li key={i}>{a}</li>)}
-            </ul>
-          </div>
+            <div style={styles.infoBox}>
+              <h4 style={styles.infoTitle}>Atractivos Principales</h4>
+              <ul style={styles.simpleList}>
+                {pueblo.atractivos.map((a, i) => <li key={i}>{a}</li>)}
+              </ul>
+            </div>
 
-          <div style={styles.infoSection}>
-            <h4>Tiendas más cercanas</h4>
-            <ul style={styles.simpleList}>
-              {pueblo.tiendasCercanas.map((t, i) => <li key={i}>{t}</li>)}
-            </ul>
+            <div style={styles.infoBox}>
+              <h4 style={styles.infoTitle}>Comercios Cercanos</h4>
+              <ul style={styles.simpleList}>
+                {pueblo.tiendasCercanas.map((t, i) => <li key={i}>{t}</li>)}
+              </ul>
+            </div>
           </div>
         </section>
 
 
         {/* Sección Tradiciones */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}><Landmark size={18} /> Tradiciones y Costumbres</h3>
+          <h3 style={styles.sectionTitle}><Landmark size={18} /> Tradiciones y Costumbres Locales</h3>
           <ul style={styles.tradList}>
             {pueblo.tradiciones.map((t, i) => (
               <li key={i} style={styles.tradItem}>
@@ -282,7 +286,7 @@ const PuebloDetailCard: React.FC<{
           </ul>
           <div style={styles.rowGap}>
             <input
-              placeholder="Agregar tradición o costumbre"
+              placeholder="Nueva tradición o costumbre a añadir"
               value={nuevaTradicion}
               onChange={(e) => setNuevaTradicion(e.target.value)}
               style={styles.input}
@@ -304,7 +308,7 @@ const PuebloDetailCard: React.FC<{
 
         {/* Galería */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}><Camera size={18} /> Galería de la Comunidad</h3>
+          <h3 style={styles.sectionTitle}><Camera size={18} /> Galería de la Comunidad ({pueblo.fotos.length})</h3>
           <div style={styles.gallery}>
             {pueblo.fotos.length === 0 ? (
               <div style={styles.empty}>No hay fotos — sé el primero en subir.</div>
@@ -324,8 +328,8 @@ const PuebloDetailCard: React.FC<{
           </div>
           <div style={styles.rowGap}>
             <input
-                type="text"
-                placeholder="Pegar URL de la imagen aquí"
+                type="url"
+                placeholder="Pegar URL de la imagen aquí (e.g., https://picsum.photos/300/200)"
                 value={fotoURL}
                 onChange={(e) => setFotoURL(e.target.value)}
                 style={styles.input}
@@ -333,21 +337,23 @@ const PuebloDetailCard: React.FC<{
             <button
                 onClick={() => {
                     const url = fotoURL.trim();
-                    if (url) {
+                    if (url && (url.startsWith('http') || url.startsWith('data:'))) {
                         onSubirFoto(pueblo.id, url);
                         setFotoURL("");
+                    } else if (url) {
+                      alert('Por favor, ingresa una URL de imagen válida.');
                     }
                 }}
                 style={styles.btnAccent}
             >
-                <Upload size={16} /> Subir
+              <Upload size={16} /> Subir
             </button>
           </div>
         </section>
 
         {/* Comentarios */}
         <section style={styles.section}>
-          <h3 style={styles.sectionTitle}><Send size={18} /> Publicaciones</h3>
+          <h3 style={styles.sectionTitle}><MessageSquare size={18} /> Comentarios y Experiencias</h3>
           <div style={styles.commentForm}>
             <input
               placeholder="Tu nombre (opcional)"
@@ -372,20 +378,20 @@ const PuebloDetailCard: React.FC<{
               style={styles.btnPrimary}
               disabled={comentario.trim().length === 0}
             >
-              Publicar
+              <Send size={16} /> Publicar
             </button>
           </div>
-          <div style={{ marginTop: 16 }}>
+          <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
             {pueblo.comentarios.length === 0 ? (
-              <small style={styles.empty}>Aún no hay publicaciones — anima a la comunidad.</small>
+              <small style={styles.empty}>Aún no hay publicaciones — ¡sé el primero en compartir!</small>
             ) : (
               pueblo.comentarios.map((c) => (
                 <div key={c.id} style={styles.commentCard}>
                   <div style={styles.commentHeader}>
                     <strong style={{ color: styles.primary }}>{c.autor}</strong>
-                    <small style={{ color: "#6b7280", fontSize: 12 }}>{c.fecha}</small>
+                    <small style={{ color: "#718096", fontSize: 12 }}>{c.fecha}</small>
                   </div>
-                  <p style={{ margin: 0, color: '#334155' }}>{c.texto}</p>
+                  <p style={{ margin: 0, color: '#4a5568', fontSize: 15 }}>{c.texto}</p>
                 </div>
               ))
             )}
@@ -397,14 +403,15 @@ const PuebloDetailCard: React.FC<{
 };
 
 
-// ---------------- SUMMARY CARD (El nuevo diseño al estilo de la imagen) ----------------
+// ---------------- SUMMARY CARD (Diseño Moderno y Bohemio) ----------------
 const PuebloSummaryCard: React.FC<{
   pueblo: Pueblo;
   onVerDetalles: (id: number) => void;
 }> = ({ pueblo, onVerDetalles }) => {
   // Simular datos de resumen para el diseño de la imagen
   const diasSimulados = pueblo.id + 4; // 5, 6, 7 días
-  const costoSimulado = `desde ${1500 + pueblo.id * 40}€`; // Simular costo
+  const costoSimulado = pueblo.id === 4 ? `2500€` : `desde ${1500 + pueblo.id * 80}€`; // Simular costo
+  const ratingSimulado = (pueblo.id % 5) + 1; // 1 a 5
 
   return (
     <article style={styles.summaryCard}>
@@ -418,10 +425,9 @@ const PuebloSummaryCard: React.FC<{
           </div>
           {/* Metadatos - Esquina superior derecha (Iconos) */}
           <div style={styles.imageMetaRight}>
-            <Heart size={16} color="white" style={{ opacity: 0.8 }} />
-            <MessageSquare size={16} color="white" style={{ opacity: 0.8 }} />
-            <Camera size={16} color="white" style={{ opacity: 0.8 }} />
-            <ChevronRight size={16} color="white" style={{ opacity: 1 }} />
+            <Heart size={16} color="white" style={styles.imageIcon} />
+            <MessageSquare size={16} color="white" style={styles.imageIcon} />
+            <Camera size={16} color="white" style={styles.imageIcon} />
           </div>
         </div>
       </div>
@@ -431,17 +437,23 @@ const PuebloSummaryCard: React.FC<{
         <h3 style={styles.summaryTitle}>{pueblo.titulo}</h3>
         <p style={styles.summaryLocation}>{pueblo.categoria}</p>
         
+        <div style={styles.summaryRating}>
+          {Array(ratingSimulado).fill(0).map((_, i) => (
+            <Star key={i} size={14} color={styles.accent} fill={styles.accent} />
+          ))}
+        </div>
+
         <p style={styles.summaryDescription}>
-          {pueblo.descripcion.length > 80 ? pueblo.descripcion.substring(0, 80) + '...' : pueblo.descripcion}
+          {pueblo.descripcion.length > 90 ? pueblo.descripcion.substring(0, 90) + '...' : pueblo.descripcion}
         </p>
 
         <div style={styles.summaryFooter}>
           <div style={styles.summaryPrice}>
-            <span style={styles.priceLabel}>desde</span>
+            <span style={styles.priceLabel}>Precio total</span>
             <span style={styles.priceValue}>{costoSimulado}</span>
           </div>
-          <button style={styles.btnRed} onClick={() => onVerDetalles(pueblo.id)}>
-            Ver Detalles
+          <button style={styles.btnAccentSummary} onClick={() => onVerDetalles(pueblo.id)}>
+            Ver Detalles <ChevronRight size={14} />
           </button>
         </div>
       </div>
@@ -488,7 +500,7 @@ const PueblosCosterosPage: React.FC = () => {
     handleUpdatePueblos(id, (p) => ({
       ...p,
       comentarios: [
-        { id: Date.now(), autor, texto, fecha: new Date().toLocaleDateString() },
+        { id: Date.now(), autor, texto, fecha: new Date().toLocaleDateString('es-ES') },
         ...p.comentarios,
       ],
     }));
@@ -513,10 +525,10 @@ const PueblosCosterosPage: React.FC = () => {
   if (puebloSeleccionado) {
     return (
       <div style={styles.page}>
-        <header style={styles.hero}>
-          <div style={styles.heroInner}>
-            <h1 style={styles.pageTitle}>Detalles de {puebloSeleccionado.titulo}</h1>
-            <p style={styles.pageSubtitle}>Comentarios, fotos, tradiciones y servicios.</p>
+        <header style={styles.heroDetail}>
+          <div style={styles.heroInnerDetail}>
+            <h1 style={styles.pageTitleDetail}>Detalles de **{puebloSeleccionado.titulo}**</h1>
+            <p style={styles.pageSubtitleDetail}>La guía completa para tu próxima expedición a **{puebloSeleccionado.categoria}**.</p>
           </div>
         </header>
 
@@ -542,8 +554,8 @@ const PueblosCosterosPage: React.FC = () => {
     <div style={styles.page}>
       <header style={styles.hero}>
         <div style={styles.heroInner}>
-          <h1 style={styles.pageTitle}>🗺️ Expediciones Costeras de la Zona Maya (6 Destinos)</h1>
-          <p style={styles.pageSubtitle}>Descubre los destinos y comparte tus experiencias con la comunidad.</p>
+          <h1 style={styles.pageTitle}>🗺️ Expediciones Costeras de la Zona Maya</h1>
+          <p style={styles.pageSubtitle}>Descubre 6 destinos únicos y comparte tus experiencias con la comunidad de viajeros.</p>
         </div>
       </header>
 
@@ -569,76 +581,98 @@ export default PueblosCosterosPage;
 
 
 // ---------------- STYLES (JS objects) ----------------
-const primary = "#4a5568"; // Gris oscuro para texto/títulos
-const accent = "#6f5e5eff"; // Rojo principal para botones/acento (simulando el diseño)
+const primary = "#1e293b"; // Gris oscuro/Azul casi negro para texto/títulos (elegante)
+const accent = "#A0522D"; // Terracota / Ladrillo suave (Bohemio)
 const serifFont = "Georgia, 'Times New Roman', Times, serif";
-const sansFont = "Inter, ui-sans-serif, system-ui";
+const sansFont = "'Inter', 'Helvetica Neue', Arial, sans-serif";
+const shadowSubtle = "0 6px 16px rgba(0,0,0,0.08)";
 
 // Definición de base para botones fuera del objeto styles
 const btnBase = {
   padding: "10px 14px",
-  borderRadius: 4,
+  borderRadius: 8,
   border: "none",
   cursor: "pointer",
-  fontWeight: 700,
-  transition: "background-color 0.2s ease, transform 0.1s ease",
+  fontWeight: 600,
+  transition: "all 0.2s ease",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   gap: 8,
   whiteSpace: "nowrap",
+  fontSize: 14,
+  lineHeight: 1,
 };
 
 const styles: { [k: string]: any } = {
   primary,
+  accent,
   page: {
     fontFamily: sansFont,
-    background: "#fdfdfd",
+    background: "#f4f7f9",
     minHeight: "100vh",
   },
 
+  // --- HERO for SUMMARY PAGE ---
   hero: {
-    background: `linear-gradient(180deg, #f0f0f0, transparent)`,
-    padding: "40px 20px",
-    borderBottom: `1px solid #e0e0e0`,
+    background: `linear-gradient(180deg, #ffffff, #f4f7f9)`,
+    padding: "60px 20px 40px 20px",
+    borderBottom: `1px solid #e2e8f0`,
   },
-
   heroInner: {
-    maxWidth: 1100,
+    maxWidth: 1200,
     margin: "0 auto",
     textAlign: "center",
   },
+  pageTitle: { fontFamily: serifFont, color: primary, fontSize: 40, margin: 0, fontWeight: 700 },
+  pageSubtitle: { color: "#64748b", opacity: 0.9, marginTop: 10, fontSize: 18, fontWeight: 300 },
 
-  pageTitle: { color: primary, fontSize: 32, margin: 0, fontWeight: 800 },
-  pageSubtitle: { color: "#718096", opacity: 0.9, marginTop: 10, fontSize: 16 },
+  // --- HERO for DETAIL PAGE ---
+  heroDetail: {
+    background: primary,
+    color: 'white',
+    padding: "60px 20px 30px 20px",
+  },
+  heroInnerDetail: {
+    maxWidth: 800,
+    margin: "0 auto",
+    textAlign: "center",
+  },
+  pageTitleDetail: { fontFamily: serifFont, color: "white", fontSize: 32, margin: 0, fontWeight: 700 },
+  pageSubtitleDetail: { color: "#cbd5e1", opacity: 0.9, marginTop: 10, fontSize: 16, fontWeight: 300 },
 
-  container: { maxWidth: 1100, margin: "36px auto", padding: "0 18px" },
-  containerDetail: { maxWidth: 800, margin: "36px auto", padding: "0 18px" },
+
+  container: { maxWidth: 1200, margin: "40px auto", padding: "0 20px" },
+  containerDetail: { maxWidth: 800, margin: "40px auto", padding: "0 20px" },
 
   grid: {
     display: "grid",
-    gap: 32,
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gap: 36,
+    gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
   },
 
-  // --- STYLES FOR SUMMARY CARD (The new look) ---
+  // --- STYLES FOR SUMMARY CARD (Elegant/Bohemian Look) ---
   summaryCard: {
     background: "white",
-    borderRadius: 0, 
-    boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
+    borderRadius: 12, 
+    boxShadow: shadowSubtle,
     overflow: "hidden",
     display: "flex",
     flexDirection: "column",
-    maxWidth: 360,
-    margin: '0 auto'
+    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+    "&:hover": { transform: 'translateY(-4px)', boxShadow: "0 10px 20px rgba(0,0,0,0.12)" },
+    maxWidth: 400, // Ajuste para el diseño de la grilla
+    margin: '0 auto',
   },
 
   summaryImage: (img: string) => ({
-    height: 180,
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.3)), url(${img})`,
+    height: 200,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url(${img})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     position: 'relative',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
   }),
 
   imageOverlay: {
@@ -647,7 +681,7 @@ const styles: { [k: string]: any } = {
     left: 0,
     right: 0,
     bottom: 0,
-    padding: 10,
+    padding: 12,
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
@@ -655,149 +689,162 @@ const styles: { [k: string]: any } = {
     fontSize: 12,
   },
   imageMetaLeft: {
-    background: 'rgba(0,0,0,0.5)',
-    padding: '4px 8px',
-    borderRadius: 4,
+    background: 'rgba(0,0,0,0.4)',
+    padding: '6px 10px',
+    borderRadius: 999,
     display: 'flex',
     alignItems: 'center',
     fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
   imageMetaRight: {
     display: 'flex',
     gap: 8,
   },
+  imageIcon: { opacity: 0.9, filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.5))' },
 
-  summaryBody: { padding: "18px 24px 24px 24px" },
+  summaryBody: { padding: "20px 24px 24px 24px" },
   
   summaryTitle: { 
-    fontFamily: serifFont, // Serif para títulos
-    fontSize: 22, 
-    margin: "0 0 5px 0", 
-    color: "#2d3748", 
-    fontWeight: 400 
+    fontFamily: serifFont, 
+    fontSize: 26, 
+    margin: "0 0 4px 0", 
+    color: primary, 
+    fontWeight: 700 
   },
   summaryLocation: { 
     fontSize: 14, 
     color: accent, 
     margin: "0 0 10px 0", 
-    textTransform: 'uppercase' 
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    fontWeight: 600,
+  },
+  summaryRating: {
+    display: 'flex',
+    gap: 2,
+    marginBottom: 10,
   },
   summaryDescription: {
-    margin: "0 0 15px 0",
-    color: "#4a5568",
-    fontSize: 14,
-    lineHeight: 1.4,
+    margin: "0 0 20px 0",
+    color: "#475569",
+    fontSize: 15,
+    lineHeight: 1.5,
   },
   
   summaryFooter: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 10,
-    borderTop: '1px solid #ebedf0'
+    paddingTop: 15,
+    borderTop: '1px dashed #e2e8f0'
   },
   
   summaryPrice: {
     display: 'flex',
     flexDirection: 'column',
-    lineHeight: 1,
+    lineHeight: 1.2,
   },
   priceLabel: {
     fontSize: 12,
-    color: '#718096',
+    color: '#64748b',
     marginBottom: 4,
   },
   priceValue: {
     fontFamily: serifFont,
-    fontSize: 18,
+    fontSize: 22,
     color: accent,
     fontWeight: 700,
   },
   
-  btnRed: {
+  btnAccentSummary: {
     ...btnBase,
     background: accent,
     color: "white",
-    fontSize: 14,
-    padding: '12px 20px',
+    fontSize: 15,
+    padding: '12px 18px',
     borderRadius: 8,
-    "&:hover": { backgroundColor: "#e2f8e9ff" }
+    "&:hover": { backgroundColor: "#8c4828", transform: 'scale(1.02)' }
   },
   
-  // --- STYLES FOR DETAIL CARD (The original detailed look, but updated) ---
+  // --- STYLES FOR DETAIL CARD (Clean and Structured Look) ---
   detailCard: {
     background: "white",
-    borderRadius: 16,
-    boxShadow: "0 8px 30px rgba(16,24,40,0.08)",
+    borderRadius: 12,
+    boxShadow: shadowSubtle,
     overflow: "hidden",
-    border: `1px solid #e0e0e0`,
+    border: `1px solid #e2e8f0`,
     display: "flex",
     flexDirection: "column",
-    paddingBottom: 20,
-    marginTop: 20,
+    marginTop: -40, // Sobresalir ligeramente del hero
+    zIndex: 1,
+    position: 'relative',
   },
   
-  btnBack: {
+  btnBackDetail: {
     ...btnBase,
     background: 'transparent',
-    color: primary,
-    padding: '10px 20px',
+    color: '#64748b',
+    padding: '15px 20px',
     justifyContent: 'flex-start',
-    borderBottom: '1px solid #f0f0f0',
+    borderBottom: '1px solid #f8f9fa',
     borderRadius: 0,
-    fontWeight: 600,
+    fontWeight: 500,
+    fontSize: 15,
   },
   headerImageDetail: (img: string) => ({
-    height: 250,
-    backgroundImage: `url(${img})`,
+    height: 300,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.1)), url(${img})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
-    marginBottom: 20,
   }),
-  cardBodyDetail: { padding: "0 20px 20px 20px", display: "flex", flexDirection: "column", gap: 18 },
-  titleDetail: { fontSize: 28, margin: 0, color: "#2d3748", fontWeight: 700 },
-  categoryDetail: { background: "#edf2f7", color: primary, padding: "8px 12px", borderRadius: 999, fontSize: 13, fontWeight: 700 },
-  descriptionDetail: { margin: 0, color: "#4a5568", fontSize: 16 },
+  cardBodyDetail: { padding: "30px 30px 40px 30px", display: "flex", flexDirection: "column", gap: 25 },
+  titleDetail: { fontFamily: serifFont, fontSize: 36, margin: 0, color: primary, fontWeight: 700 },
+  categoryDetail: { background: "#e2e8f0", color: primary, padding: "8px 14px", borderRadius: 999, fontSize: 14, fontWeight: 700, alignSelf: 'flex-start' },
+  descriptionDetail: { margin: 0, color: "#334155", fontSize: 17, lineHeight: 1.6 },
 
   // Shared Detail Styles
-  cardMeta: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 },
-  section: { marginTop: 16, paddingTop: 16, borderTop: "1px solid #e9ecef" },
-  sectionTitle: { display: "flex", gap: 8, alignItems: "center", fontSize: 17, margin: "6px 0", color: primary, fontWeight: 700 },
+  cardMeta: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, borderBottom: '1px solid #f8f9fa', paddingBottom: 15 },
+  section: { marginTop: 0, paddingTop: 15, borderTop: "1px solid #e2e8f0" },
+  sectionTitle: { display: "flex", gap: 8, alignItems: "center", fontSize: 20, margin: "6px 0 15px 0", color: primary, fontWeight: 700 },
 
-  // --- NUEVOS ESTILOS PARA SECCIONES DE INFO ---
-  infoSection: { marginTop: 10, paddingLeft: 10, borderLeft: `3px solid #e9ecef` },
-  infoText: { margin: "5px 0 10px 0", color: "#4a5568", fontSize: 15 },
-  simpleList: { listStyleType: 'disc', paddingLeft: 20, margin: "5px 0 10px 0", fontSize: 15, color: "#4a5568" },
+  // --- ESTILOS PARA SECCIONES DE INFO (Grid) ---
+  infoGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 },
+  infoBox: { padding: 15, background: '#f8fafc', borderRadius: 8, borderLeft: `4px solid ${accent}` },
+  infoTitle: { margin: '0 0 8px 0', fontSize: 16, color: primary, fontWeight: 700 },
+  infoText: { margin: "0", color: "#475569", fontSize: 15, lineHeight: 1.5 },
+  simpleList: { listStyleType: 'disc', paddingLeft: 20, margin: "0", fontSize: 15, color: "#475569" },
   // ---------------------------------------------
 
-  tradList: { listStyle: "none", padding: 0, margin: "10px 0 0 0", display: "flex", gap: 8, flexWrap: "wrap" },
-  tradItem: { background: "#f7fafc", padding: "6px 10px", borderRadius: 8, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, border: `1px solid #ebedf0`, color: primary },
-  deleteSmall: { background: "transparent", border: "none", cursor: "pointer", fontSize: 12, color: "#993333", fontWeight: 'bold' },
+  tradList: { listStyle: "none", padding: 0, margin: "10px 0 0 0", display: "flex", gap: 10, flexWrap: "wrap" },
+  tradItem: { background: "#e2e8f0", padding: "8px 12px", borderRadius: 6, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, color: primary, fontWeight: 500, border: `1px solid #cbd5e1` },
+  deleteSmall: { background: "transparent", border: "none", cursor: "pointer", fontSize: 12, color: "#b91c1c", fontWeight: 'bold' },
 
-  gallery: { display: "flex", gap: 10, flexWrap: "wrap", marginTop: 12 },
-  thumbWrap: { position: "relative", width: 100, height: 75, borderRadius: 8, overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.1)" },
+  gallery: { display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 },
+  thumbWrap: { position: "relative", width: 120, height: 90, borderRadius: 8, overflow: "hidden", boxShadow: "0 4px 8px rgba(0,0,0,0.15)" },
   thumb: { width: "100%", height: "100%", objectFit: "cover", cursor: "pointer", display: "block" },
-  deleteThumb: { position: "absolute", top: 4, right: 4, background: "rgba(43, 33, 33, 0.8)", color: "white", border: "none", width: 20, height: 20, borderRadius: 999, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", fontSize: 12 },
-  empty: { color: "#718096", fontSize: 14, fontStyle: 'italic' },
+  deleteThumb: { position: "absolute", top: 4, right: 4, background: "rgba(0,0,0,0.6)", color: "white", border: "none", width: 22, height: 22, borderRadius: 999, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center", fontSize: 14, fontWeight: 'bold' },
+  empty: { color: "#94a3b8", fontSize: 15, fontStyle: 'italic', padding: 10, border: '1px dashed #e2e8f0', borderRadius: 8 },
 
-  input: { width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #d1d5db", outline: "none", transition: "border-color 0.2s", "&:focus": { borderColor: accent } },
-  textarea: { width: "100%", padding: 14, borderRadius: 8, border: "1px solid #d1d5db", minHeight: 80, outline: "none", transition: "border-color 0.2s", "&:focus": { borderColor: accent } },
-  rowGap: { display: "flex", gap: 12, marginTop: 10, alignItems: 'stretch' },
+  input: { width: "100%", padding: "12px 16px", borderRadius: 8, border: "1px solid #cbd5e1", outline: "none", transition: "border-color 0.2s", "&:focus": { borderColor: accent, boxShadow: `0 0 0 2px ${accent}30` } },
+  textarea: { width: "100%", padding: 16, borderRadius: 8, border: "1px solid #cbd5e1", minHeight: 100, outline: "none", transition: "border-color 0.2s", "&:focus": { borderColor: accent, boxShadow: `0 0 0 2px ${accent}30` } },
+  rowGap: { display: "flex", gap: 15, marginTop: 15, alignItems: 'stretch' },
 
-  btnPrimary: { ...btnBase, marginTop: 10, background: primary, color: "white", borderRadius: 8, "&:hover": { backgroundColor: "#2d3748" } },
-  btnPrimarySmall: { ...btnBase, padding: "8px 12px", borderRadius: 6, background: primary, color: "white", fontWeight: 600, "&:hover": { backgroundColor: "#2d3748" } },
-  btnAccent: { ...btnBase, background: accent, color: "white", borderRadius: 8, "&:hover": { backgroundColor: "#fdf2f2ff" } },
+  btnPrimary: { ...btnBase, marginTop: 15, background: primary, color: "white", "&:hover": { backgroundColor: "#0f172a" } },
+  btnPrimarySmall: { ...btnBase, padding: "10px 16px", background: primary, color: "white", fontWeight: 600, "&:hover": { backgroundColor: "#0f172a" } },
+  btnAccent: { ...btnBase, background: accent, color: "white", "&:hover": { backgroundColor: "#8c4828" } },
 
   commentForm: { display: "flex", flexDirection: "column" },
-  commentCard: { background: "#f7f7f9", padding: 14, borderRadius: 10, marginBottom: 10, border: "1px solid #e9edf0" },
-  commentHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10, marginBottom: 8 },
+  commentCard: { background: "#ffffff", padding: 18, borderRadius: 10, boxShadow: "0 1px 4px rgba(0,0,0,0.05)", border: "1px solid #e2e8f0" },
+  commentHeader: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10, marginBottom: 8 },
 
-  // Modal (Actualizados para un mejor contraste)
-  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000, padding: 20, backdropFilter: "blur(2px)" },
-  modalContent: { position: "relative", width: "min(1200px, 98%)", borderRadius: 12, background: "white", boxShadow: "0 25px 75px rgba(0,0,0,0.4)", overflow: "hidden" },
-  modalClose: { position: "absolute", top: 15, right: 15, background: "rgba(0,0,0,0.5)", color: "white", border: "none", cursor: "pointer", zIndex: 2, width: 35, height: 35, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' },
+  // Modal (Ajuste de estilo)
+  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2000, padding: 20, backdropFilter: "blur(4px)" },
+  modalContent: { position: "relative", width: "min(1200px, 98%)", borderRadius: 12, background: "#f8fafc", boxShadow: "0 25px 75px rgba(0,0,0,0.5)", overflow: "hidden" },
+  modalClose: { position: "absolute", top: 10, right: 10, background: "rgba(0,0,0,0.6)", color: "white", border: "none", cursor: "pointer", zIndex: 2, width: 40, height: 40, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' },
   modalBody: { display: "flex", alignItems: "center", justifyContent: "center", gap: 20, padding: 20 },
-  modalImage: { maxHeight: "80vh", width: "auto", maxWidth: "100%", borderRadius: 8, objectFit: 'contain' },
-  modalNav: { background: "rgba(255,255,255,0.7)", border: `1px solid #d0d0d0`, color: primary, padding: 10, borderRadius: 6, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", transition: 'background 0.2s', "&:hover": { background: "white" } },
-  modalFooter: { padding: 12, textAlign: "center", borderTop: "1px solid #e6e6e6", color: '#4b5563', fontSize: 14 },
+  modalImage: { maxHeight: "85vh", width: "auto", maxWidth: "100%", borderRadius: 8, objectFit: 'contain', boxShadow: "0 4px 15px rgba(0,0,0,0.2)" },
+  modalNav: { background: "rgba(255,255,255,0.9)", border: `1px solid #cbd5e1`, color: primary, padding: 12, borderRadius: 8, cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", transition: 'background 0.2s', "&:hover": { background: "white" } },
+  modalFooter: { padding: 15, textAlign: "center", borderTop: "1px solid #e2e8f0", color: '#475569', fontSize: 14 },
+  modalFooterText: { fontWeight: 600 },
 };
