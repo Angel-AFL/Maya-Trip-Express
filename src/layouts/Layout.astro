@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
-export interface Props { title: string; }
+export interface Props {
+  title: string;
+}
 const { title } = Astro.props;
 ---
 
@@ -10,56 +12,128 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+
+    <style is:global>
+      /* --- 1. LÓGICA DE EMPUJE (TOOLBAR) --- */
+      /* Permitir que se vea la barra azul de Google */
+      .goog-te-banner-frame.skiptranslate {
+        display: block !important;
+      }
+
+      body {
+        position: relative;
+        min-height: 100vh;
+        /* Esto hace que el empuje sea suave */
+        transition: top 0.3s ease;
+        top: 0px;
+      }
+
+      /* --- 2. ESTILOS DEL WIDGET DE GOOGLE (DENTRO DEL MENÚ) --- */
+      /* Quitamos el logo de Google y bordes feos para que se vea limpio */
+      .goog-te-gadget {
+        font-family: inherit !important;
+        color: #0a3a52 !important;
+      }
+      .goog-te-gadget-simple {
+        background-color: #fff !important;
+        border: 1px solid #e5e7eb !important;
+        padding: 8px !important;
+        border-radius: 4px !important;
+        font-size: 14px !important;
+        width: 100% !important;
+      }
+      /* Ocultar la imagen de "Powered by Google" si estorba */
+      .goog-te-gadget img {
+        display: none !important;
+      }
+
+      /* Ocultar tooltips molestos */
+      .goog-tooltip {
+        display: none !important;
+      }
+      .goog-tooltip:hover {
+        display: none !important;
+      }
+      .goog-text-highlight {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
+    </style>
   </head>
 
   <body class="bg-[#F5F7F9] text-[#0A3A52] relative">
-
-    <!-- menu-->
-    <header class="bg-linear-to-r from-blue-600 via-blue-400 to-blue-300 shadow-lg">
+    <header class="bg-green-700 shadow-lg">
       <nav class="flex justify-between items-center px-10 py-4">
-
         <div class="flex items-center gap-4">
           <img src="/Gemin.png" alt="Logo Ximbal Maya" class="w-30" />
           <span class="text-white text-2xl font-bold tracking-wide">
-            XIMBAL MAYA
+            XÍIMBA MAYA
           </span>
         </div>
 
         <ul class="flex gap-8 text-white text-lg font-semibold items-center">
-          <li><a class="hover:text-[#23C7A4] transition" href="/">Inicio</a></li>
-          <li><a class="hover:text-[#23C7A4] transition" href="/comunidad">Comunidad</a></li>
-          <li><a class="hover:text-[#23C7A4] transition" href="/pueblos-destacados">Pueblos</a></li>
-          <li><a class="hover:text-[#23C7A4] transition" href="/maps">Mapa</a></li>
-          <li><a class="hover:text-[#23C7A4] transition" href="/experiencias">Experiencias</a></li>
+          <li>
+            <a class="hover:text-[#23C7A4] transition" href="/">Inicio</a>
+          </li>
+          <li>
+            <a class="hover:text-[#23C7A4] transition" href="/comunidad"
+              >Comunidad</a>
+          </li>
+          <li>
+            <a
+              class="hover:text-[#23C7A4] transition"
+              href="/pueblos-destacados">Pueblos</a>
+          </li>
+          <li>
+            <a class="hover:text-[#23C7A4] transition" href="/maps">Mapa</a>
+          </li>
+          <li>
+            <a class="hover:text-[#23C7A4] transition" href="/experiencias"
+              >Experiencias</a>
+          </li>
 
           <li class="relative">
-            <button id="langBtn" class="hover:text-[#23C7A4] transition flex items-center gap-1 text-white">
-              Idioma <span class="text-sm"></span>
+            <button
+              id="langToggleBtn"
+              class="hover:text-[#23C7A4] transition flex items-center gap-1 text-white cursor-pointer"
+            >
+              Idioma
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+              >
             </button>
 
-            <!-- menuidioma -->
-            <ul id="langMenu"
-              class="absolute hidden bg-white text-[#0A3A52] shadow-lg rounded-md py-2 mt-2 w-32 z-50">
-              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Español</a></li>
-              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Inglés</a></li>
-              <li><a class="block px-4 py-1 hover:bg-gray-100" href="#">Maya</a></li>
-            </ul>
+            <div
+              id="googleDropdown"
+              class="absolute hidden bg-white shadow-xl rounded-md p-3 mt-3 w-48 z-50 right-0 border border-gray-200"
+            >
+              <p class="text-xs text-gray-500 mb-2 font-normal">
+                Selecciona un idioma:
+              </p>
+              <div id="google_translate_element"></div>
+            </div>
           </li>
 
           <li>
             <button
               id="openLogin"
-              class="bg-[#23C7A4] text-[#0A3A52] px-4 py-1 rounded-lg font-semibold hover:bg-[#1ea88b] transition"
+              class="bg-[#23C7A4] text-[#0A3A52] px-4 py-1 rounded-lg font-semibold hover:bg-[#1ea88b] transition cursor-pointer"
             >
               Iniciar sesión
             </button>
           </li>
-
         </ul>
       </nav>
     </header>
 
-    <!--  CONTENIDO NO QUITAR -->
     <main>
       <slot />
     </main>
@@ -68,65 +142,99 @@ const { title } = Astro.props;
       id="loginModal"
       class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex justify-center items-center z-50"
     >
-      <div class="bg-[#FAF7E8] w-[90%] md:w-[700px] rounded-2xl shadow-xl border p-8 relative animate-scale">
-        <button id="closeLogin" class="absolute right-5 top-5 text-3xl font-bold text-[#0A3A52]">
-          ✕
-        </button>
-
+      <div
+        class="bg-[#FAF7E8] w-[90%] md:w-[700px] rounded-2xl shadow-xl border p-8 relative animate-scale"
+      >
+        <button
+          id="closeLogin"
+          class="absolute right-5 top-5 text-3xl font-bold text-[#0A3A52] cursor-pointer"
+          >✕</button
+        >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <img
             src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/01ed8651063409.58e1b843cef5b.png"
             class="rounded-xl border border-[#C3B091]"
           />
-
           <div>
             <h2 class="text-3xl font-bold mb-3 text-[#2F4F4F]">Login</h2>
             <p class="text-[#2F4F4F] mb-6">
-              Inicie sesión para compartir sus experiencias y solicitar una colaboración.
+              Inicie sesión para compartir sus experiencias.
             </p>
-
             <form class="flex flex-col gap-4">
               <div>
-                <label class="text-[#2F4F4F] font-semibold">Usuario</label>
-                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="text" />
+                <label class="text-[#2F4F4F] font-semibold">Usuario</label
+                ><input
+                  class="w-full border-b border-gray-500 bg-transparent focus:outline-none"
+                  type="text"
+                />
               </div>
-
               <div>
-                <label class="text-[#2F4F4F] font-semibold">Email</label>
-                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="email" />
+                <label class="text-[#2F4F4F] font-semibold">Email</label><input
+                  class="w-full border-b border-gray-500 bg-transparent focus:outline-none"
+                  type="email"
+                />
               </div>
-
               <div>
-                <label class="text-[#2F4F4F] font-semibold">Contraseña</label>
-                <input class="w-full border-b border-gray-500 bg-transparent focus:outline-none" type="password" />
+                <label class="text-[#2F4F4F] font-semibold">Contraseña</label
+                ><input
+                  class="w-full border-b border-gray-500 bg-transparent focus:outline-none"
+                  type="password"
+                />
               </div>
-
-              <button class="mt-4 bg-[#2F4F4F] text-white py-2 rounded-xl hover:bg-black transition">
-                Entrar
-              </button>
+              <button
+                class="mt-4 bg-[#2F4F4F] text-white py-2 rounded-xl hover:bg-black transition cursor-pointer"
+                >Entrar</button
+              >
             </form>
-
           </div>
         </div>
       </div>
     </div>
 
+    <script is:inline>
+      /* Inicializar Google Translate */
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "es",
+            includedLanguages: "es,en,yua,myn,fr",
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // --- LÓGICA DEL MENÚ IDIOMA ---
+        const langBtn = document.getElementById("langToggleBtn");
+        const langDropdown = document.getElementById("googleDropdown");
 
-        const langBtn = document.getElementById("langBtn");
-        const langMenu = document.getElementById("langMenu");
+        if (langBtn && langDropdown) {
+          // Al hacer clic en "Idioma", mostramos/ocultamos el selector real de Google
+          langBtn.onclick = (e) => {
+            e.stopPropagation();
+            langDropdown.classList.toggle("hidden");
+          };
 
-        if (langBtn && langMenu) {
-          langBtn.onclick = () => langMenu.classList.toggle("hidden");
-
+          // Cerrar si se hace clic fuera
           document.addEventListener("click", (e) => {
-            if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
-              langMenu.classList.add("hidden");
+            if (
+              !langBtn.contains(e.target) &&
+              !langDropdown.contains(e.target)
+            ) {
+              langDropdown.classList.add("hidden");
             }
           });
         }
 
+        // --- LÓGICA DEL MODAL LOGIN ---
         const modal = document.getElementById("loginModal");
         const open = document.getElementById("openLogin");
         const close = document.getElementById("closeLogin");
@@ -134,24 +242,27 @@ const { title } = Astro.props;
         if (open && modal && close) {
           open.onclick = () => modal.classList.remove("hidden");
           close.onclick = () => modal.classList.add("hidden");
-
           modal.onclick = (e) => {
             if (e.target === modal) modal.classList.add("hidden");
           };
         }
-
       });
     </script>
 
     <style>
       .animate-scale {
-        animation: scaleIn .3s ease-out;
+        animation: scaleIn 0.3s ease-out;
       }
       @keyframes scaleIn {
-        from { transform: scale(0.8); opacity: 0; }
-        to   { transform: scale(1); opacity: 1; }
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
     </style>
-
   </body>
 </html>

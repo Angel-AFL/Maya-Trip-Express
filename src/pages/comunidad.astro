@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import '../styles/global.css';
+import "../styles/global.css";
 import CommunityGrid from "../components/CommunityGrid.tsx";
 
 const items = [
@@ -40,58 +40,57 @@ const temas = [
   "Cultura y tradiciones mayas",
 ];
 ---
+
 <Layout title="Comunidad - Maya Trip Express">
+  <section class="min-h-screen w-full text-[#1a1a1a]">
+    <!-- LAYOUT DE FORO -->
+    <div class="flex min-h-screen">
+      <!-- SIDEBAR -->
+      <aside
+        class="hidden md:flex flex-col w-72 bg-white/70 backdrop-blur-xl border-r border-black/10 p-6 sticky top-0 h-screen shadow-lg"
+      >
+        <h3 class="text-2xl font-bold text-[#0f172a] mb-4">
+          Temas interesantes
+        </h3>
 
-<section class="min-h-screen w-full text-[#1a1a1a]">
+        <ul class="space-y-3 text-lg">
+          {
+            temas.map((t) => (
+              <li class="p-3 bg-white/60 rounded-xl hover:bg-[#2E7D32] hover:text-white cursor-pointer transition-all shadow-sm">
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
 
-  <!-- LAYOUT DE FORO -->
-  <div class="flex min-h-screen">
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="flex-1 p-8 md:p-12">
+        <!-- Encabezado -->
+        <div class="text-left mb-12">
+          <h2
+            class="text-5xl md:text-6xl font-black text-[#0f172a] uppercase tracking-tight"
+          >
+            Comunidad
+          </h2>
+          <p class="text-lg md:text-xl mt-2 text-[#334155] max-w-2xl">
+            Un espacio para conectar con otros viajeros, compartir fotos, dar
+            recomendaciones y conocer nuevas experiencias.
+          </p>
+        </div>
 
-    <!-- SIDEBAR -->
-    <aside class="hidden md:flex flex-col w-72 bg-white/70 backdrop-blur-xl border-r border-black/10 p-6 sticky top-0 h-screen shadow-lg">
-
-      <h3 class="text-2xl font-bold text-[#0f172a] mb-4">
-        Temas interesantes
-      </h3>
-
-      <ul class="space-y-3 text-lg">
-        {temas.map((t) => (
-          <li class="p-3 bg-white/60 rounded-xl hover:bg-[#2E7D32] hover:text-white cursor-pointer transition-all shadow-sm">
-            {t}
-          </li>
-        ))}
-      </ul>
-
-    </aside>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-1 p-8 md:p-12">
-
-      <!-- Encabezado -->
-      <div class="text-left mb-12">
-        <h2 class="text-5xl md:text-6xl font-black text-[#0f172a] uppercase tracking-tight">
-          Comunidad
-        </h2>
-        <p class="text-lg md:text-xl mt-2 text-[#334155] max-w-2xl">
-          Un espacio para conectar con otros viajeros, compartir fotos, dar recomendaciones y conocer nuevas experiencias.
-        </p>
-      </div>
-
-      <!-- Contenedor del grid -->
-      <div class="
-        backdrop-blur-xl 
-        bg-white/50 
-        border border-black/10 
-        shadow-2xl 
-        rounded-3xl 
-        p-6 md:p-10 
-      ">
-        <CommunityGrid items={items} client:load />
-      </div>
-    </main>
-
-  </div>
-
-</section>
-
+        <!-- Contenedor del grid -->
+        <div
+          class="backdrop-blur-xl
+        bg-white/50
+        border border-black/10
+        shadow-2xl
+        rounded-3xl
+        p-6 md:p-10"
+        >
+          <CommunityGrid items={items} client:load />
+        </div>
+      </main>
+    </div>
+  </section>
 </Layout>
