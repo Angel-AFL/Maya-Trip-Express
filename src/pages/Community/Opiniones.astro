@@ -1,45 +1,115 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import "../../styles/global.css";
+import { supabase } from "../../supabaseClient";
+
+// Obtener opiniones desde Supabase
+const { data: opiniones, error } = await supabase
+  .from("opiniones")
+  .select("*")
+  .order("created_at", { ascending: false });
+
+let mensaje = "";
+
+// Manejo del formulario SOLO con application/x-www-form-urlencoded
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+
+  const nombre = form.get("nombre");
+  const lugar = form.get("lugar");
+  const opinion = form.get("opinion");
+
+  const { error: insertError } = await supabase
+    .from("opiniones")
+    .insert([{ nombre, lugar, opinion }]);
+
+  if (insertError) {
+    mensaje = "Hubo un error al enviar tu opinión.";
+  } else {
+    mensaje = "Opinión enviada correctamente. Gracias por compartir.";
+  }
+}
 ---
 
 <Layout title="Opiniones - Maya Trip Express">
-  <section class="w-full min-h-screen text-[#1a1a1a] py-12 px-4 md:px-8">
+  <section class="w-full min-h-screen bg-[#F4F1EA] text-[#1a1a1a] py-12 px-4 md:px-8">
     <div class="max-w-6xl mx-auto">
-      <h1 class="text-5xl font-bold text-center mb-10">
+
+      <h1 class="text-5xl font-bold text-center mb-12 text-[#2E5230] tracking-tight">
         Opiniones de viajeros
       </h1>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Testimonial 1 -->
-        <div
-          class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-black shadow-xl"
-        >
-          <p class="text-xl italic">
-            “Una experiencia increíble. El viaje estuvo bien organizado y el
-            guía fue muy amable.”
-          </p>
-          <div class="mt-4">
-            <h3 class="text-xl font-bold text-[#2E7D32]">— Andrea G.</h3>
-            <p class="text-sm text-gray-700">Ciudad de México</p>
-          </div>
-        </div>
+      <!-- LISTADO DE OPINIONES -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
 
-        <!-- Testimonial 2 -->
-        <div
-          class="bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-black shadow-xl"
-        >
-          <p class="text-xl italic">
-            “Lo recomiendo muchísimo. Todo estuvo muy seguro y los paisajes
-            hermosos.”
-          </p>
-          <div class="mt-4">
-            <h3 class="text-xl font-bold text-[#2E7D32]">— Luis M.</h3>
-            <p class="text-sm text-gray-700">Oaxaca</p>
-          </div>
-        </div>
+        {opiniones?.length
+          ? opiniones.map((op) => (
+              <article class="bg-white shadow-lg border border-[#d8d8d8] rounded-2xl p-6 transition hover:shadow-xl">
+                <p class="text-lg leading-relaxed italic text-gray-800">
+                  “{op.opinion}”
+                </p>
+
+                <div class="mt-5 border-t pt-4">
+                  <h3 class="text-xl font-semibold text-[#2E7D32]">
+                    {op.nombre}
+                  </h3>
+                  <p class="text-sm text-gray-600">{op.lugar}</p>
+                </div>
+              </article>
+            ))
+          : (
+            <p class="text-gray-700 text-lg col-span-3 text-center py-10">
+              No hay opiniones aún. Sé el primero en compartir.
+            </p>
+          )
+        }
       </div>
-      <div class="mt-10">
+
+      <!-- FORMULARIO -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border border-[#e2e2e2] max-w-xl mx-auto">
+        <h2 class="text-3xl font-bold mb-6 text-center text-[#2E5230]">
+          Comparte tu experiencia
+        </h2>
+
+        {mensaje && (
+          <p class="mb-4 text-green-700 font-semibold text-center">
+            {mensaje}
+          </p>
+        )}
+
+        <form method="POST" class="grid grid-cols-1 gap-4">
+
+          <input
+            name="nombre"
+            required
+            placeholder="Tu nombre"
+            class="p-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#2E7D32]"
+          />
+
+          <input
+            name="ciudad"
+            required
+            placeholder="Lugar que visito"
+            class="p-3 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-[#2E7D32]"
+          />
+
+          <textarea
+            name="opinion"
+            required
+            placeholder="Escribe tu opinión..."
+            class="p-3 rounded-lg border border-gray-300 h-28 text-sm resize-none focus:ring-2 focus:ring-[#2E7D32]"
+          ></textarea>
+
+          <button
+            class="w-full px-6 py-3 bg-[#2E7D32] text-white font-semibold rounded-xl hover:bg-green-700 transition shadow-md text-sm"
+          >
+            Enviar opinión
+          </button>
+        </form>
+      </div>
+
+      <!-- BOTÓN REGRESAR -->
+      <div class="mt-10 text-center">
         <a
           href="/comunidad"
           class="px-6 py-3 bg-black text-white rounded-lg shadow-md hover:bg-gray-900 transition"
