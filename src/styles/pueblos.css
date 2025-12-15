@@ -1,0 +1,174 @@
+/* CONTENEDOR PRINCIPAL */
+.pueblos-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.titulo {
+  font-size: 2.3rem;
+  font-weight: bold;
+  color: #0b8f48;
+  margin-bottom: 25px;
+}
+
+/* GRID */
+.grid-pueblos {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+/* CARD */
+.card-pueblo {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 4px 10px #0001;
+  transition: 0.3s;
+}
+.card-pueblo:hover {
+  transform: scale(1.03);
+}
+
+.img-pueblo {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.nombre-pueblo {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.3rem;
+  color: #0b8f48;
+}
+
+.info-row, .rating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 5px;
+}
+
+.star {
+  color: gold;
+}
+
+.btn-ver-mas {
+  background: #0b8f48;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+.btn-ver-mas:hover {
+  background: #066a34;
+}
+
+/* DETALLE */
+.detalle-container {
+  padding: 20px;
+}
+
+.btn-back {
+  background: #0b8f48;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.titulo-pueblo {
+  font-size: 2rem;
+  color: #0b8f48;
+}
+
+.ubicacion-detalle {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.subtitulo {
+  font-size: 1.5rem;
+  margin-top: 25px;
+  color: #0b8f48;
+}
+
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.foto-galeria {
+  width: 100%;
+  height: 130px;
+  border-radius: 10px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+}
+
+.modal-img {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 10px;
+}
+
+.btn-cerrar {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: white;
+  border-radius: 50%;
+  padding: 5px;
+  border: none;
+}
+
+/* COMENTARIOS */
+.comentarios {
+  margin-top: 15px;
+}
+
+.comentario-card {
+  background: #f3fff6;
+  border-left: 4px solid #0b8f48;
+  padding: 10px 15px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+.comentario-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.autor {
+  font-weight: bold;
+  color: #0b8f48;
+}
+
+.fecha {
+  font-size: 0.8rem;
+  color: #666;
+}

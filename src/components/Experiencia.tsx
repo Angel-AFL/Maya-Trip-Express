@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
+import { supabase } from "../supabaseClient"; // ⚠️ ASEGURATE QUE ESTA RUTA SEA CORRECTA
 import {
   Palmtree,
   Waves,
@@ -17,14 +18,16 @@ import {
   Clock,
   Tag,
   Navigation,
+  PlusCircle,
+  Trash2,
+  CalendarCheck,
+  DollarSign,
 } from "lucide-react";
 
 /* --- ⚠️ INSTRUCCIONES PARA TU PROYECTO ASTRO ⚠️ ---
-  
-  1. Instala las dependencias: npm install react-leaflet leaflet @types/leaflet
-  2. DESCOMENTA el bloque de "IMPORTACIONES REALES" abajo.
-  3. DESCOMENTA la "CONFIGURACIÓN DE ICONOS".
-  4. INTERCAMBIA los componentes: Comenta el 'MapTuristico' (Mock) y descomenta el 'MapTuristico' (Real).
+   1. Instala las dependencias: npm install react-leaflet leaflet @types/leaflet @supabase/supabase-js
+   2. DESCOMENTA el bloque de "IMPORTACIONES REALES" abajo.
+   3. DESCOMENTA la "CONFIGURACIÓN DE ICONOS".
 */
 
 // --- IMPORTACIONES REALES (DESCOMENTAR EN ASTRO) ---
@@ -33,7 +36,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 // --- CONFIGURACIÓN DE ICONOS (DESCOMENTAR EN ASTRO) ---
-
 const DefaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
@@ -64,6 +66,7 @@ interface Ubicacion {
   precio?: string;
   horario?: string;
   destacado?: boolean;
+  categoria?: string;
 }
 
 interface ExperienceCardProps {
@@ -71,91 +74,7 @@ interface ExperienceCardProps {
   onExplore: (categoria: string) => void;
 }
 
-/* =================================================================================
-   ⬇️ COMPONENTE MAPA TURISTICO (MOCK - SOLO PARA VISTA PREVIA AQUÍ) ⬇️
-   En tu proyecto Astro, usa el componente REAL que está más abajo.
-   ================================================================================= */
-
-/* =================================================================================
-   ⬇️ COMPONENTE MAPA TURISTICO (REAL - PARA ASTRO) ⬇️
-   Descomenta este bloque y utilízalo en lugar del mock anterior.
-   ================================================================================= */
-
-// Componente auxiliar para manejar el Zoom programático
-const MapController = ({
-  center,
-  zoom,
-}: {
-  center: [number, number];
-  zoom: number;
-}) => {
-  const map = useMap();
-  useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
-  }, [center, zoom, map]);
-  return null;
-};
-
-const MapTuristico: React.FC<{
-  ubicaciones: Ubicacion[];
-  ubicacionActiva: Ubicacion | null;
-}> = ({ ubicaciones, ubicacionActiva }) => {
-  // Centro por defecto (Yucatán) si no hay selección
-  const defaultCenter: [number, number] = [20.6, -88.6];
-  const defaultZoom = 8;
-
-  // Calculamos el centro y zoom dinámico
-  const activeCenter: [number, number] = ubicacionActiva
-    ? [ubicacionActiva.lat, ubicacionActiva.lng]
-    : defaultCenter;
-
-  const activeZoom = ubicacionActiva ? 12 : defaultZoom; // Zoom más cercano al seleccionar
-
-  return (
-    <div style={{ width: "100%", height: "100%", zIndex: 0 }}>
-      <MapContainer
-        center={defaultCenter}
-        zoom={defaultZoom}
-        scrollWheelZoom={true}
-        style={{ height: "100%", width: "100%" }}
-      >
-        <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        // Controlador para mover el mapa cuando cambia la selección
-        <MapController center={activeCenter} zoom={activeZoom} />
-        {ubicaciones.map((ubi, idx) => (
-          <Marker key={idx} position={[ubi.lat, ubi.lng]}>
-            <Popup>
-              <div style={{ textAlign: "center", fontFamily: "system-ui" }}>
-                <strong style={{ color: "#16a34a", fontSize: "14px" }}>
-                  {ubi.nombre}
-                </strong>
-                <p style={{ margin: "5px 0", fontSize: "12px" }}>
-                  {ubi.descripcion}
-                </p>
-                {ubi.destacado && (
-                  <span
-                    style={{
-                      fontSize: "10px",
-                      background: "#fbbf24",
-                      padding: "2px",
-                    }}
-                  >
-                    ★ Imperdible
-                  </span>
-                )}
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </div>
-  );
-};
-
-// --- DATOS AMPLIADOS ---
+// --- DATOS AMPLIADOS (IMPORTANTE: NO BORRAR) ---
 const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
   Naturaleza: [
     {
@@ -176,45 +95,13 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
       horario: "09:00 - 16:30",
     },
     {
-      nombre: "Cenote Zací",
-      descripcion: "Cenote urbano en el corazón de Valladolid.",
-      lat: 20.691,
-      lng: -88.202,
-      precio: "60 MXN",
-      horario: "08:30 - 17:00",
-    },
-    {
-      nombre: "Cenote Dos Ojos",
-      descripcion: "Sistema de cuevas inundadas ideal para buceo.",
-      lat: 20.333,
-      lng: -87.444,
-      precio: "350 MXN",
-      horario: "08:00 - 17:00",
-    },
-    {
-      nombre: "Gran Cenote",
-      descripcion: "Aguas cristalinas con tortugas y peces.",
-      lat: 20.222,
-      lng: -87.455,
-      precio: "300 MXN",
-      horario: "08:00 - 16:45",
-    },
-    {
       nombre: "Laguna de Bacalar",
       descripcion: "La laguna de los siete colores.",
       lat: 18.677,
       lng: -88.391,
-      precio: "Acceso público",
+      precio: "Gratis",
       horario: "Siempre abierto",
       destacado: true,
-    },
-    {
-      nombre: "Reserva de Calakmul",
-      descripcion: "Selva tropical y biosfera protegida.",
-      lat: 18.105,
-      lng: -89.81,
-      precio: "Gratis",
-      horario: "06:00 - 17:00",
     },
   ],
   Historia: [
@@ -236,45 +123,12 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
       horario: "08:00 - 17:00",
     },
     {
-      nombre: "Ek Balam",
-      descripcion: "Acrópolis con tumba y fachada de estuco.",
-      lat: 20.89,
-      lng: -88.136,
-      precio: "456 MXN",
-      horario: "08:00 - 17:00",
-    },
-    {
-      nombre: "Palenque",
-      descripcion: "Misteriosa ciudad en la selva de Chiapas.",
-      lat: 17.484,
-      lng: -92.046,
-      precio: "90 MXN",
-      horario: "08:00 - 16:30",
-      destacado: true,
-    },
-    {
       nombre: "Tulum",
       descripcion: "Única zona arqueológica frente al mar.",
       lat: 20.211,
       lng: -87.43,
       precio: "95 MXN",
       horario: "08:00 - 17:00",
-    },
-    {
-      nombre: "Edzná",
-      descripcion: "La casa de los Itzáes en Campeche.",
-      lat: 19.596,
-      lng: -90.228,
-      precio: "85 MXN",
-      horario: "08:00 - 17:00",
-    },
-    {
-      nombre: "Calakmul (Ruinas)",
-      descripcion: "Inmensa ciudad maya oculta en la selva.",
-      lat: 18.106,
-      lng: -89.807,
-      precio: "90 MXN",
-      horario: "06:00 - 13:00",
     },
   ],
   Cultura: [
@@ -295,30 +149,6 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
       precio: "Gratis",
       horario: "Siempre abierto",
     },
-    {
-      nombre: "Maní",
-      descripcion: "Pueblo Mágico con convento histórico.",
-      lat: 20.393,
-      lng: -89.392,
-      precio: "Gratis",
-      horario: "Siempre abierto",
-    },
-    {
-      nombre: "Mérida (Centro)",
-      descripcion: "Capital cultural con arquitectura francesa.",
-      lat: 20.967,
-      lng: -89.623,
-      precio: "Gratis",
-      horario: "Siempre abierto",
-    },
-    {
-      nombre: "Campeche",
-      descripcion: "Ciudad amurallada patrimonio de la humanidad.",
-      lat: 19.83,
-      lng: -90.534,
-      precio: "Gratis",
-      horario: "Siempre abierto",
-    },
   ],
   Relax: [
     {
@@ -330,48 +160,15 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
       horario: "24h",
     },
     {
-      nombre: "Playa Paraíso",
-      descripcion: "Arena blanca icónica en Tulum.",
-      lat: 20.2,
-      lng: -87.42,
-      precio: "Acceso libre",
-      horario: "10:00 - 18:00",
-      destacado: true,
-    },
-    {
       nombre: "Holbox",
       descripcion: "Isla sin coches, santuario de tiburón ballena.",
       lat: 21.52,
       lng: -87.38,
-      precio: "Ferry 220 MXN",
-      horario: "Siempre abierto",
-    },
-    {
-      nombre: "Isla Mujeres",
-      descripcion: "Playa Norte y arrecifes de coral.",
-      lat: 21.232,
-      lng: -86.733,
-      precio: "Ferry 300 MXN",
-      horario: "Siempre abierto",
-    },
-    {
-      nombre: "Mahahual",
-      descripcion: "Pueblo pesquero tranquilo con malecón.",
-      lat: 18.713,
-      lng: -87.708,
-      precio: "Gratis",
+      precio: "220 MXN",
       horario: "Siempre abierto",
     },
   ],
   Arquitectura: [
-    {
-      nombre: "Hacienda Yaxcopoil",
-      descripcion: "Museo vivo de la época del henequén.",
-      lat: 20.73,
-      lng: -89.7,
-      precio: "150 MXN",
-      horario: "09:00 - 18:00",
-    },
     {
       nombre: "Hacienda Sotuta de Peón",
       descripcion: "Hacienda viva con paseos en truck.",
@@ -389,15 +186,489 @@ const ubicacionesPorCategoria: Record<string, Ubicacion[]> = {
       precio: "650 MXN",
       horario: "09:00 - 15:00",
     },
-    {
-      nombre: "Hacienda Temozón",
-      descripcion: "Lujosa hacienda restaurada como hotel.",
-      lat: 20.785,
-      lng: -89.663,
-      precio: "Consumo",
-      horario: "09:00 - 20:00",
-    },
   ],
+};
+
+/* =================================================================================
+   ⬇️ COMPONENTES DE MAPA ⬇️
+   ================================================================================= */
+
+const MapController = ({
+  center,
+  zoom,
+}: {
+  center: [number, number];
+  zoom: number;
+}) => {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(center, zoom, { duration: 1.5 });
+  }, [center, zoom, map]);
+  return null;
+};
+
+const MapTuristico: React.FC<{
+  ubicaciones: Ubicacion[];
+  ubicacionActiva: Ubicacion | null;
+}> = ({ ubicaciones, ubicacionActiva }) => {
+  const defaultCenter: [number, number] = [20.6, -88.6];
+  const defaultZoom = 8;
+  const activeCenter: [number, number] = ubicacionActiva
+    ? [ubicacionActiva.lat, ubicacionActiva.lng]
+    : defaultCenter;
+  const activeZoom = ubicacionActiva ? 12 : defaultZoom;
+
+  return (
+    <div style={{ width: "100%", height: "100%", zIndex: 0 }}>
+      <MapContainer
+        center={defaultCenter}
+        zoom={defaultZoom}
+        scrollWheelZoom={true}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution="&copy; OpenStreetMap contributors"
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MapController center={activeCenter} zoom={activeZoom} />
+        {ubicaciones.map((ubi, idx) => (
+          <Marker key={idx} position={[ubi.lat, ubi.lng]}>
+            <Popup>
+              <div style={{ textAlign: "center", fontFamily: "system-ui" }}>
+                <strong style={{ color: "#16a34a", fontSize: "14px" }}>
+                  {ubi.nombre}
+                </strong>
+                <p style={{ margin: "5px 0", fontSize: "12px" }}>
+                  {ubi.descripcion}
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
+  );
+};
+
+// --- COMPONENTE: PLANIFICADOR DE VIAJE (CON SUPABASE) ---
+const TripPlanner: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+  const [itinerary, setItinerary] = useState<Ubicacion[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const getPriceNumber = (priceString?: string) => {
+    if (!priceString || priceString.toLowerCase().includes("gratis")) return 0;
+    const num = parseInt(priceString.replace(/\D/g, ""));
+    return isNaN(num) ? 0 : num;
+  };
+
+  const totalCost = useMemo(() => {
+    return itinerary.reduce(
+      (acc, item) => acc + getPriceNumber(item.precio),
+      0
+    );
+  }, [itinerary]);
+
+  const addToItinerary = (item: Ubicacion, category: string) => {
+    if (itinerary.some((i) => i.nombre === item.nombre)) return;
+    setItinerary([...itinerary, { ...item, categoria: category }]);
+  };
+
+  const removeFromItinerary = (nombre: string) => {
+    setItinerary(itinerary.filter((i) => i.nombre !== nombre));
+  };
+
+  // --- Lógica de Guardado en Supabase ---
+  const handleSaveItinerary = async () => {
+    if (itinerary.length === 0) {
+      alert("Tu itinerario está vacío. Añade destinos antes de guardar.");
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      // Intenta guardar en la tabla 'itinerarios'
+      const { data, error } = await supabase
+        .from("itinerarios")
+        .insert([
+          {
+            lugares: itinerary, // Array JSON
+            costo_total: totalCost,
+          },
+        ])
+        .select();
+
+      if (error) throw error;
+
+      alert("¡Ruta guardada exitosamente en la nube!");
+    } catch (error: any) {
+      console.error("Error al guardar:", error);
+      alert(
+        "Error al guardar (Revisa consola y conexión): " +
+          (error.message || "Desconocido")
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        background: "#f8fafc",
+      }}
+    >
+      {/* HEADER PLANIFICADOR */}
+      <div
+        style={{
+          padding: "20px",
+          background: "white",
+          borderBottom: "1px solid #e2e8f0",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <button
+          onClick={onBack}
+          disabled={isSaving}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            border: "none",
+            background: "transparent",
+            color: "#64748b",
+            cursor: "pointer",
+            fontSize: "16px",
+            opacity: isSaving ? 0.5 : 1,
+          }}
+        >
+          <ArrowLeft size={20} /> Volver
+        </button>
+        <h2
+          style={{
+            margin: 0,
+            color: "#1e293b",
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          <Compass size={28} color="#8b5cf6" /> Mi Plan de Viaje
+        </h2>
+        <div style={{ width: "80px" }}></div>
+      </div>
+
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        {/* COLUMNA IZQUIERDA: CATÁLOGO */}
+        <div
+          style={{
+            width: "50%",
+            padding: "20px",
+            overflowY: "auto",
+            borderRight: "1px solid #e2e8f0",
+            opacity: isSaving ? 0.7 : 1,
+            pointerEvents: isSaving ? "none" : "auto",
+          }}
+        >
+          <h3 style={{ marginTop: 0, color: "#475569" }}>
+            Explora y añade destinos
+          </h3>
+          {/* Se usa ubicacionesPorCategoria aquí. Si esto no está definido arriba, la app explota */}
+          {Object.entries(ubicacionesPorCategoria).map(([cat, items]) => (
+            <div key={cat} style={{ marginBottom: "20px" }}>
+              <h4
+                style={{
+                  color: "#8b5cf6",
+                  borderBottom: "1px solid #ddd",
+                  paddingBottom: "5px",
+                  marginBottom: "10px",
+                }}
+              >
+                {cat}
+              </h4>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "10px",
+                }}
+              >
+                {items.map((item, idx) => {
+                  const added = itinerary.some((i) => i.nombre === item.nombre);
+                  return (
+                    <div
+                      key={idx}
+                      style={{
+                        background: "white",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        border: "1px solid #e2e8f0",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                        opacity: added ? 0.6 : 1,
+                      }}
+                    >
+                      <div>
+                        <strong
+                          style={{
+                            display: "block",
+                            color: "#334155",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {item.nombre}
+                        </strong>
+                        <span style={{ fontSize: "12px", color: "#94a3b8" }}>
+                          {item.precio}
+                        </span>
+                      </div>
+                      <button
+                        disabled={added}
+                        onClick={() => addToItinerary(item, cat)}
+                        style={{
+                          marginTop: "10px",
+                          background: added ? "#cbd5e1" : "#8b5cf6",
+                          color: "white",
+                          border: "none",
+                          padding: "6px",
+                          borderRadius: "6px",
+                          cursor: added ? "default" : "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "5px",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {added ? (
+                          "Añadido"
+                        ) : (
+                          <>
+                            <PlusCircle size={14} /> Añadir
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* COLUMNA DERECHA: ITINERARIO */}
+        <div
+          style={{
+            width: "50%",
+            padding: "20px",
+            background: "#f1f5f9",
+            overflowY: "auto",
+            display: "flex",
+            flexDirection: "column",
+            opacity: isSaving ? 0.7 : 1,
+            pointerEvents: isSaving ? "none" : "auto",
+          }}
+        >
+          <h3
+            style={{
+              marginTop: 0,
+              color: "#475569",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <CalendarCheck size={20} /> Tu Itinerario
+          </h3>
+
+          {itinerary.length === 0 ? (
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#94a3b8",
+                border: "2px dashed #cbd5e1",
+                borderRadius: "10px",
+              }}
+            >
+              <MapIcon
+                size={48}
+                style={{ opacity: 0.2, marginBottom: "10px" }}
+              />
+              <p>Tu lista está vacía.</p>
+              <p style={{ fontSize: "12px" }}>
+                Selecciona destinos del panel izquierdo.
+              </p>
+            </div>
+          ) : (
+            <div style={{ flex: 1 }}>
+              {itinerary.map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: "white",
+                    padding: "15px",
+                    borderRadius: "10px",
+                    marginBottom: "10px",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: "#f3e8ff",
+                        color: "#8b5cf6",
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontWeight: "bold",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <strong style={{ display: "block", color: "#1e293b" }}>
+                        {item.nombre}
+                      </strong>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          color: "#64748b",
+                          background: "#f1f5f9",
+                          padding: "2px 6px",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        {item.categoria}
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "15px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "13px",
+                        fontWeight: "600",
+                        color: "#475569",
+                      }}
+                    >
+                      {item.precio}
+                    </span>
+                    <button
+                      onClick={() => removeFromItinerary(item.nombre)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "#ef4444",
+                      }}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* RESUMEN DE COSTOS Y BOTÓN GUARDAR */}
+          <div
+            style={{
+              marginTop: "20px",
+              background: "#1e293b",
+              color: "white",
+              padding: "20px",
+              borderRadius: "12px",
+              pointerEvents: "auto",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "10px",
+              }}
+            >
+              <span>Lugares seleccionados:</span>
+              <strong>{itinerary.length}</strong>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                fontSize: "20px",
+                borderTop: "1px solid #334155",
+                paddingTop: "10px",
+              }}
+            >
+              <span>Total Estimado (Entradas):</span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#4ade80",
+                }}
+              >
+                <DollarSign size={20} />
+                <span style={{ fontWeight: "bold" }}>{totalCost} MXN</span>
+              </div>
+            </div>
+
+            <button
+              style={{
+                width: "100%",
+                marginTop: "15px",
+                background: isSaving ? "#64748b" : "#8b5cf6",
+                color: "white",
+                border: "none",
+                padding: "12px",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                cursor: isSaving ? "wait" : "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px",
+                transition: "background 0.3s",
+              }}
+              onClick={handleSaveItinerary}
+              disabled={isSaving}
+            >
+              {isSaving ? "Guardando..." : "Guardar Mi Ruta en la Nube"}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 // --- DATA PRINCIPAL (HOME) ---
@@ -600,13 +871,10 @@ const InteractiveMap: React.FC<{ categoria: string; onBack: () => void }> = ({
   onBack,
 }) => {
   const ubicaciones = ubicacionesPorCategoria[categoria] || [];
-  // Estado para la ubicación seleccionada (Zoom)
   const [activeLocation, setActiveLocation] = useState<Ubicacion | null>(null);
 
-  // Efecto para seleccionar automáticamente el primer destacado si no hay selección
   useEffect(() => {
     if (ubicaciones.length > 0 && !activeLocation) {
-      // Opcional: Auto-seleccionar el primer lugar o dejar centrado general
       // setActiveLocation(ubicaciones[0]);
     }
   }, []);
@@ -659,13 +927,13 @@ const InteractiveMap: React.FC<{ categoria: string; onBack: () => void }> = ({
             return (
               <div
                 key={i}
-                onClick={() => setActiveLocation(ubi)} // Al hacer click, activamos el zoom
+                onClick={() => setActiveLocation(ubi)}
                 style={{
-                  border: isActive ? "2px solid #16a34a" : "1px solid #e3e3e3", // Borde verde si está activo
+                  border: isActive ? "2px solid #16a34a" : "1px solid #e3e3e3",
                   borderRadius: "10px",
                   padding: "15px",
                   marginBottom: "12px",
-                  background: isActive ? "#f0fdf4" : "#fff", // Fondo sutil si está activo
+                  background: isActive ? "#f0fdf4" : "#fff",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
                   cursor: "pointer",
                   transition: "all 0.2s",
@@ -741,7 +1009,6 @@ const InteractiveMap: React.FC<{ categoria: string; onBack: () => void }> = ({
                     <Star size={10} fill="white" /> IMPERDIBLE
                   </span>
                 )}
-                {/* Botón explícito de 'Ver en mapa' para móviles o claridad */}
                 <div
                   style={{
                     marginTop: "8px",
@@ -775,7 +1042,6 @@ const InteractiveMap: React.FC<{ categoria: string; onBack: () => void }> = ({
           position: "relative",
         }}
       >
-        {/* Pasamos la ubicación activa al mapa para que haga el zoom */}
         <MapTuristico
           ubicaciones={ubicaciones}
           ubicacionActiva={activeLocation}
@@ -789,13 +1055,19 @@ const InteractiveMap: React.FC<{ categoria: string; onBack: () => void }> = ({
 const ExperienciasPage: React.FC = () => {
   const [vistaActual, setVistaActual] = useState<string | null>(null);
 
-  if (vistaActual)
+  // LOGICA PRINCIPAL: Si la categoría es "Tu Ruta", carga el Planificador.
+  // Si es otra categoría, carga el Mapa Interactivo.
+  if (vistaActual) {
+    if (vistaActual === "Tu Ruta") {
+      return <TripPlanner onBack={() => setVistaActual(null)} />;
+    }
     return (
       <InteractiveMap
         categoria={vistaActual}
         onBack={() => setVistaActual(null)}
       />
     );
+  }
 
   return (
     <div
@@ -840,7 +1112,7 @@ const ExperienciasPage: React.FC = () => {
             }}
           >
             Explora las maravillas del sureste mexicano. Selecciona una
-            categoría para ver el mapa detallado.
+            categoría para ver el mapa o crea tu propio itinerario.
           </p>
         </div>
         <div
