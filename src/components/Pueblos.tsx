@@ -1,16 +1,14 @@
-// PueblosCosterosSupabaseGaleria.tsx
-// Página React conectada a Supabase para PUEBLOS COSTEROS
-// Diseño profesional verde/blanco + manejo de errores visible
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
 import {
+  Waves,
+  MapPin,
+  Plus,
+  ChevronLeft,
   Camera,
   Upload,
   Send,
-  ChevronLeft,
-  MapPin,
-  Waves,
+  X,
 } from "lucide-react";
 
 // ---------------- TYPES ----------------
@@ -25,7 +23,7 @@ interface Pueblo {
 
 interface Detalle {
   id: number;
-  tipo: "foto" | "tradicion" | "atractivo" | "tienda_cercana";
+  tipo: "foto";
   valor: string;
 }
 
@@ -33,50 +31,60 @@ interface Comentario {
   id: number;
   autor: string;
   texto: string;
-  fecha_publicacion: string;
 }
 
-// ---------------- PAGE ----------------
+// ---------------- COMPONENT ----------------
 const PueblosCosterosSupabaseGaleria: React.FC = () => {
   const [pueblos, setPueblos] = useState<Pueblo[]>([]);
   const [puebloSel, setPuebloSel] = useState<Pueblo | null>(null);
   const [detalles, setDetalles] = useState<Detalle[]>([]);
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const [nuevo, setNuevo] = useState({
+    titulo: "",
+    descripcion: "",
+    imagen_principal: "",
+    ubicacion_general: "",
+  });
 
   const [fotoURL, setFotoURL] = useState("");
-  const [comentarioTxt, setComentarioTxt] = useState("");
   const [autor, setAutor] = useState("");
+  const [comentarioTxt, setComentarioTxt] = useState("");
 
-  // --------- CARGAR PUEBLOS ---------
   useEffect(() => {
     cargarPueblos();
   }, []);
 
   const cargarPueblos = async () => {
     setLoading(true);
-    setErrorMsg(null);
-
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("pueblos")
-      .select("id,titulo,descripcion,imagen_principal,categoria,ubicacion_general")
+      .select("*")
       .ilike("categoria", "%costero%");
-
-    console.log("PUEBLOS DATA:", data);
-    console.log("PUEBLOS ERROR:", error);
-
-    if (error) {
-      setErrorMsg("Error al cargar pueblos desde Supabase");
-      setPueblos([]);
-    } else {
-      setPueblos(data || []);
-    }
-
+    setPueblos(data || []);
     setLoading(false);
   };
 
-  // --------- DETALLE ---------
+  const guardarPueblo = async () => {
+    if (!nuevo.titulo || !nuevo.descripcion) return;
+
+    await supabase.from("pueblos").insert({
+      ...nuevo,
+      categoria: "Costero",
+    });
+
+    setShowModal(false);
+    setNuevo({
+      titulo: "",
+      descripcion: "",
+      imagen_principal: "",
+      ubicacion_general: "",
+    });
+    cargarPueblos();
+  };
+
   const verDetalle = async (p: Pueblo) => {
     setPuebloSel(p);
 
@@ -88,14 +96,12 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
     const { data: com } = await supabase
       .from("comentarios")
       .select("*")
-      .eq("pueblo_id", p.id)
-      .order("fecha_publicacion", { ascending: false });
+      .eq("pueblo_id", p.id);
 
     setDetalles(det || []);
     setComentarios(com || []);
   };
 
-  // --------- SUBIR FOTO ---------
   const subirFoto = async () => {
     if (!fotoURL || !puebloSel) return;
 
@@ -109,8 +115,7 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
     verDetalle(puebloSel);
   };
 
-  // --------- COMENTAR ---------
-  const publicarComentario = async () => {
+  const comentar = async () => {
     if (!comentarioTxt || !puebloSel) return;
 
     await supabase.from("comentarios").insert({
@@ -119,112 +124,120 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
       texto: comentarioTxt,
     });
 
-    setComentarioTxt("");
     setAutor("");
+    setComentarioTxt("");
     verDetalle(puebloSel);
   };
 
-  // ---------------- UI DETALLE ----------------
+  // ---------------- DETALLE ----------------
   if (puebloSel) {
-    const fotos = detalles.filter((d) => d.tipo === "foto");
-
     return (
-      <div style={{ padding: 40, maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ padding: 60, maxWidth: 1200, margin: "auto" }}>
         <button
           onClick={() => setPuebloSel(null)}
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            marginBottom: 20,
-            background: "#166534",
+            background: "linear-gradient(135deg,#166534,#22c55e)",
             color: "#fff",
+            padding: "12px 20px",
+            borderRadius: 999,
             border: "none",
-            padding: "10px 16px",
-            borderRadius: 10,
+            display: "flex",
+            gap: 8,
             cursor: "pointer",
+            marginBottom: 30,
           }}
         >
-          <ChevronLeft size={16} /> Volver
+          <ChevronLeft size={18} /> Volver
         </button>
 
-        <h1 style={{ fontSize: 34, color: "#14532d" }}>{puebloSel.titulo}</h1>
-        <p style={{ color: "#374151" }}>{puebloSel.descripcion}</p>
-        <p style={{ display: "flex", gap: 6, marginTop: 6, color: "#166534" }}>
-          <MapPin size={16} /> {puebloSel.ubicacion_general}
+        <h1 style={{ fontSize: 42, color: "#14532d" }}>
+          {puebloSel.titulo}
+        </h1>
+
+        <p style={{ fontSize: 18, maxWidth: 800 }}>
+          {puebloSel.descripcion}
         </p>
 
-        <h3 style={{ marginTop: 30, color: "#14532d" }}>
-          <Camera size={18} /> Galería
+        <p style={{ display: "flex", gap: 6, color: "#16a34a" }}>
+          <MapPin size={18} /> {puebloSel.ubicacion_general}
+        </p>
+
+        <h3 style={{ marginTop: 40, color: "#14532d" }}>
+          <Camera /> Galería
         </h3>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))",
-            gap: 16,
-          }}
-        >
-          {fotos.map((f) => (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill,260px)",
+          gap: 20
+        }}>
+          {detalles.map((f) => (
             <img
               key={f.id}
               src={f.valor}
               style={{
                 width: "100%",
-                height: 150,
+                height: 180,
                 objectFit: "cover",
-                borderRadius: 14,
+                borderRadius: 20,
+                boxShadow: "0 20px 40px rgba(0,0,0,.15)",
               }}
             />
           ))}
         </div>
 
-        <div style={{ display: "flex", gap: 10, marginTop: 15 }}>
+        <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
           <input
+            placeholder="URL de la imagen"
             value={fotoURL}
             onChange={(e) => setFotoURL(e.target.value)}
-            placeholder="URL de la imagen"
-            style={{ flex: 1, padding: 10, borderRadius: 8 }}
+            style={{
+              flex: 1,
+              padding: 14,
+              borderRadius: 14,
+              border: "1px solid #d1fae5",
+            }}
           />
           <button
             onClick={subirFoto}
             style={{
               background: "#22c55e",
               color: "#fff",
+              padding: "14px 18px",
+              borderRadius: 14,
               border: "none",
-              padding: "10px 16px",
-              borderRadius: 10,
             }}
           >
-            <Upload size={16} /> Subir
+            <Upload />
           </button>
         </div>
 
-        <h3 style={{ marginTop: 40, color: "#14532d" }}>Comentarios</h3>
+        <h3 style={{ marginTop: 50 }}>Comentarios</h3>
+
         <input
           placeholder="Tu nombre"
           value={autor}
           onChange={(e) => setAutor(e.target.value)}
-          style={{ width: "100%", marginBottom: 6, padding: 10 }}
+          style={{ width: "100%", padding: 14, borderRadius: 14 }}
         />
         <textarea
           placeholder="Comparte tu experiencia"
           value={comentarioTxt}
           onChange={(e) => setComentarioTxt(e.target.value)}
-          style={{ width: "100%", padding: 10 }}
+          style={{ width: "100%", padding: 14, borderRadius: 14, marginTop: 8 }}
         />
         <button
-          onClick={publicarComentario}
+          onClick={comentar}
           style={{
             marginTop: 10,
-            background: "#166534",
+            background: "linear-gradient(135deg,#14532d,#22c55e)",
             color: "#fff",
+            padding: "14px 26px",
+            borderRadius: 999,
             border: "none",
-            padding: "10px 18px",
-            borderRadius: 10,
           }}
         >
-          <Send size={16} /> Publicar
+          <Send /> Publicar
         </button>
       </div>
     );
@@ -232,55 +245,126 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
 
   // ---------------- LISTADO ----------------
   return (
-    <div style={{ padding: 50, background: "#fefffeff", minHeight: "100vh" }}>
-      <h1 style={{ fontSize: 38, color: "#14532d", display: "flex", gap: 10 }}>
-        <Waves /> Pueblos Costeros
+    <div style={{
+      minHeight: "100vh",
+      padding: 60,
+      background: "linear-gradient(180deg,#ecfdf5,#ffffff)",
+    }}>
+      <h1 style={{
+        fontSize: 48,
+        color: "#14532d",
+        display: "flex",
+        gap: 12,
+      }}>
+        <Waves size={40} /> Pueblos Costeros
       </h1>
-      <p style={{ marginBottom: 30, color: "#374151" }}>
-        Comunidades costeras llenas de tradición y naturaleza
+
+      <p style={{ fontSize: 18, maxWidth: 700 }}>
+        Descubre comunidades mayas junto al mar, donde la tradición,
+        la naturaleza y la cultura siguen vivas.
       </p>
 
-      {loading && <p>Cargando pueblos...</p>}
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
-
-      {!loading && pueblos.length === 0 && (
-        <p>No hay pueblos costeros registrados.</p>
-      )}
-
-      <div
+      <button
+        onClick={() => setShowModal(true)}
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))",
-          gap: 28,
+          position: "fixed",
+          bottom: 30,
+          right: 30,
+          background: "linear-gradient(135deg,#22c55e,#16a34a)",
+          color: "#fff",
+          borderRadius: "50%",
+          width: 64,
+          height: 64,
+          border: "none",
+          boxShadow: "0 20px 40px rgba(0,0,0,.25)",
+          cursor: "pointer",
         }}
       >
+        <Plus />
+      </button>
+
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit,300px)",
+        gap: 32,
+        marginTop: 40,
+      }}>
         {pueblos.map((p) => (
           <div
             key={p.id}
             onClick={() => verDetalle(p)}
             style={{
-              borderRadius: 18,
+              borderRadius: 26,
               overflow: "hidden",
-              background: "#ffffff",
-              boxShadow: "0 12px 25px rgba(0,0,0,0.08)",
+              background: "rgba(255,255,255,.75)",
+              backdropFilter: "blur(10px)",
+              boxShadow: "0 30px 60px rgba(0,0,0,.15)",
               cursor: "pointer",
+              transition: ".3s",
             }}
           >
             <div
               style={{
-                height: 180,
-                backgroundImage: `url(${p.imagen_principal || "https://picsum.photos/500/300?green"})`,
+                height: 200,
+                backgroundImage: `url(${p.imagen_principal || "https://picsum.photos/500"})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             />
-            <div style={{ padding: 18 }}>
+            <div style={{ padding: 20 }}>
               <h3 style={{ color: "#14532d" }}>{p.titulo}</h3>
-              <small style={{ color: "#166534" }}>{p.ubicacion_general}</small>
+              <small>{p.ubicacion_general}</small>
             </div>
           </div>
         ))}
       </div>
+
+      {/* MODAL */}
+      {showModal && (
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,.6)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <div style={{
+            background: "#fff",
+            padding: 36,
+            borderRadius: 28,
+            width: 460,
+          }}>
+            <h2>Nuevo Pueblo Costero</h2>
+            {Object.keys(nuevo).map((k) => (
+              <input
+                key={k}
+                placeholder={k.replace("_"," ")}
+                value={(nuevo as any)[k]}
+                onChange={(e) =>
+                  setNuevo({ ...nuevo, [k]: e.target.value })
+                }
+                style={{ width: "100%", padding: 14, marginBottom: 10 }}
+              />
+            ))}
+            <button
+              onClick={guardarPueblo}
+              style={{
+                background: "#22c55e",
+                color: "#fff",
+                padding: "14px 26px",
+                borderRadius: 999,
+                border: "none",
+              }}
+            >
+              Guardar
+            </button>
+            <button onClick={() => setShowModal(false)} style={{ marginLeft: 10 }}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
