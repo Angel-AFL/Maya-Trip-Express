@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
-import {
-  Waves,
-  MapPin,
-  Plus,
-  ChevronLeft,
-  Camera,
-  Upload,
-  Send,
-  X,
-} from "lucide-react";
+import { Waves, Plus, ChevronLeft, Camera, Upload, Send, MapPin } from "lucide-react";
+import PuebloCard from "./PuebloCard";
+import ModalNuevoPueblo from "./ModalNuevoPueblo";
 
 // ---------------- TYPES ----------------
 interface Pueblo {
@@ -33,21 +26,12 @@ interface Comentario {
   texto: string;
 }
 
-// ---------------- COMPONENT ----------------
-const PueblosCosterosSupabaseGaleria: React.FC = () => {
+const Pueblos: React.FC = () => {
   const [pueblos, setPueblos] = useState<Pueblo[]>([]);
   const [puebloSel, setPuebloSel] = useState<Pueblo | null>(null);
   const [detalles, setDetalles] = useState<Detalle[]>([]);
   const [comentarios, setComentarios] = useState<Comentario[]>([]);
-  const [loading, setLoading] = useState(true);
-
   const [showModal, setShowModal] = useState(false);
-  const [nuevo, setNuevo] = useState({
-    titulo: "",
-    descripcion: "",
-    imagen_principal: "",
-    ubicacion_general: "",
-  });
 
   const [fotoURL, setFotoURL] = useState("");
   const [autor, setAutor] = useState("");
@@ -58,31 +42,11 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
   }, []);
 
   const cargarPueblos = async () => {
-    setLoading(true);
     const { data } = await supabase
       .from("pueblos")
       .select("*")
       .ilike("categoria", "%costero%");
     setPueblos(data || []);
-    setLoading(false);
-  };
-
-  const guardarPueblo = async () => {
-    if (!nuevo.titulo || !nuevo.descripcion) return;
-
-    await supabase.from("pueblos").insert({
-      ...nuevo,
-      categoria: "Costero",
-    });
-
-    setShowModal(false);
-    setNuevo({
-      titulo: "",
-      descripcion: "",
-      imagen_principal: "",
-      ubicacion_general: "",
-    });
-    cargarPueblos();
   };
 
   const verDetalle = async (p: Pueblo) => {
@@ -143,20 +107,14 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
             border: "none",
             display: "flex",
             gap: 8,
-            cursor: "pointer",
             marginBottom: 30,
           }}
         >
           <ChevronLeft size={18} /> Volver
         </button>
 
-        <h1 style={{ fontSize: 42, color: "#14532d" }}>
-          {puebloSel.titulo}
-        </h1>
-
-        <p style={{ fontSize: 18, maxWidth: 800 }}>
-          {puebloSel.descripcion}
-        </p>
+        <h1 style={{ fontSize: 42, color: "#14532d" }}>{puebloSel.titulo}</h1>
+        <p style={{ fontSize: 18 }}>{puebloSel.descripcion}</p>
 
         <p style={{ display: "flex", gap: 6, color: "#16a34a" }}>
           <MapPin size={18} /> {puebloSel.ubicacion_general}
@@ -171,7 +129,7 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
           gridTemplateColumns: "repeat(auto-fill,260px)",
           gap: 20
         }}>
-          {detalles.map((f) => (
+          {detalles.map(f => (
             <img
               key={f.id}
               src={f.valor}
@@ -191,23 +149,9 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
             placeholder="URL de la imagen"
             value={fotoURL}
             onChange={(e) => setFotoURL(e.target.value)}
-            style={{
-              flex: 1,
-              padding: 14,
-              borderRadius: 14,
-              border: "1px solid #d1fae5",
-            }}
+            style={{ flex: 1, padding: 14, borderRadius: 14 }}
           />
-          <button
-            onClick={subirFoto}
-            style={{
-              background: "#22c55e",
-              color: "#fff",
-              padding: "14px 18px",
-              borderRadius: 14,
-              border: "none",
-            }}
-          >
+          <button onClick={subirFoto} style={{ background: "#22c55e", color: "#fff", borderRadius: 14 }}>
             <Upload />
           </button>
         </div>
@@ -245,24 +189,10 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
 
   // ---------------- LISTADO ----------------
   return (
-    <div style={{
-      minHeight: "100vh",
-      padding: 60,
-      background: "linear-gradient(180deg,#ecfdf5,#ffffff)",
-    }}>
-      <h1 style={{
-        fontSize: 48,
-        color: "#14532d",
-        display: "flex",
-        gap: 12,
-      }}>
+    <div style={{ minHeight: "100vh", padding: 60 }}>
+      <h1 style={{ fontSize: 48, color: "#14532d", display: "flex", gap: 12 }}>
         <Waves size={40} /> Pueblos Costeros
       </h1>
-
-      <p style={{ fontSize: 18, maxWidth: 700 }}>
-        Descubre comunidades mayas junto al mar, donde la tradición,
-        la naturaleza y la cultura siguen vivas.
-      </p>
 
       <button
         onClick={() => setShowModal(true)}
@@ -276,8 +206,6 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
           width: 64,
           height: 64,
           border: "none",
-          boxShadow: "0 20px 40px rgba(0,0,0,.25)",
-          cursor: "pointer",
         }}
       >
         <Plus />
@@ -289,84 +217,18 @@ const PueblosCosterosSupabaseGaleria: React.FC = () => {
         gap: 32,
         marginTop: 40,
       }}>
-        {pueblos.map((p) => (
-          <div
-            key={p.id}
-            onClick={() => verDetalle(p)}
-            style={{
-              borderRadius: 26,
-              overflow: "hidden",
-              background: "rgba(255,255,255,.75)",
-              backdropFilter: "blur(10px)",
-              boxShadow: "0 30px 60px rgba(0,0,0,.15)",
-              cursor: "pointer",
-              transition: ".3s",
-            }}
-          >
-            <div
-              style={{
-                height: 200,
-                backgroundImage: `url(${p.imagen_principal || "https://picsum.photos/500"})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
-            <div style={{ padding: 20 }}>
-              <h3 style={{ color: "#14532d" }}>{p.titulo}</h3>
-              <small>{p.ubicacion_general}</small>
-            </div>
-          </div>
+        {pueblos.map(p => (
+          <PuebloCard key={p.id} pueblo={p} onClick={() => verDetalle(p)} />
         ))}
       </div>
 
-      {/* MODAL */}
-      {showModal && (
-        <div style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(0,0,0,.6)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
-          <div style={{
-            background: "#fff",
-            padding: 36,
-            borderRadius: 28,
-            width: 460,
-          }}>
-            <h2>Nuevo Pueblo Costero</h2>
-            {Object.keys(nuevo).map((k) => (
-              <input
-                key={k}
-                placeholder={k.replace("_"," ")}
-                value={(nuevo as any)[k]}
-                onChange={(e) =>
-                  setNuevo({ ...nuevo, [k]: e.target.value })
-                }
-                style={{ width: "100%", padding: 14, marginBottom: 10 }}
-              />
-            ))}
-            <button
-              onClick={guardarPueblo}
-              style={{
-                background: "#22c55e",
-                color: "#fff",
-                padding: "14px 26px",
-                borderRadius: 999,
-                border: "none",
-              }}
-            >
-              Guardar
-            </button>
-            <button onClick={() => setShowModal(false)} style={{ marginLeft: 10 }}>
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
+      <ModalNuevoPueblo
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        onSave={cargarPueblos}
+      />
     </div>
   );
 };
 
-export default PueblosCosterosSupabaseGaleria;
+export default Pueblos;
